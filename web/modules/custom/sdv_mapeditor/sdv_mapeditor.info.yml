@@ -1,0 +1,8 @@
+name: 'sdv_mapeditor'
+type: module
+description: 'SDV Mapeditor'
+core: 8.x
+package: 'Custom'
+dependencies:
+#  - paragraphs
+  - node

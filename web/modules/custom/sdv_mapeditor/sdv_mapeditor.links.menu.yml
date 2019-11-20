@@ -1,0 +1,14 @@
+
+# Map menu items definition
+entity.sdv_map.collection:
+  title: 'Map list'
+  route_name: entity.sdv_map.collection
+  description: 'List Map entities'
+  parent: system.admin_structure
+  weight: 100
+
+sdv_map.admin.structure.settings:
+  title: 'Map settings'
+  description: 'Configure Map entities'
+  route_name: sdv_map.settings
+  parent: system.admin_structure

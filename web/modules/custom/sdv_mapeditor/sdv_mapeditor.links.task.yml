@@ -1,0 +1,21 @@
+# Map routing definition
+sdv_map.settings_tab:
+  route_name: sdv_map.settings
+  title: 'Settings'
+  base_route: sdv_map.settings
+
+entity.sdv_map.canonical:
+  route_name: entity.sdv_map.canonical
+  base_route: entity.sdv_map.canonical
+  title: 'View'
+
+entity.sdv_map.edit_form:
+  route_name: entity.sdv_map.edit_form
+  base_route: entity.sdv_map.canonical
+  title: 'Edit'
+
+entity.sdv_map.delete_form:
+  route_name:  entity.sdv_map.delete_form
+  base_route:  entity.sdv_map.canonical
+  title: Delete
+  weight: 10

@@ -1,0 +1,5 @@
+entity.sdv_map.add_form:
+  route_name: entity.sdv_map.add_form
+  title: 'Add Map'
+  appears_on:
+    - entity.sdv_map.collection
