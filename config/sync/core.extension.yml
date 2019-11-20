@@ -14,22 +14,31 @@ module:
   dblog: 0
   dynamic_page_cache: 0
   editor: 0
+  examples: 0
   field: 0
   field_ui: 0
   file: 0
   filter: 0
+  form_api_example: 0
+  geofield: 0
   help: 0
   history: 0
   image: 0
+  inline_entity_form: 0
+  leaflet: 0
   link: 0
   menu_ui: 0
+  multistep_form_api: 0
   node: 0
+  openlayers: 0
   options: 0
   page_cache: 0
   path: 0
   quickedit: 0
   rdf: 0
+  sdv_gis: 0
   search: 0
+  search_api: 0
   shortcut: 0
   system: 0
   taxonomy: 0
