@@ -1,0 +1,37 @@
+uuid: 5a2b42ee-39d9-4f26-8eb6-6c6b15e41535
+langcode: en
+status: true
+dependencies:
+  module:
+    - sdv_mapeditor
+id: sdv_map.sdv_map.default
+targetEntityType: sdv_map
+bundle: sdv_map
+mode: default
+content:
+  map_layers:
+    type: string_textarea
+    weight: 2
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  map_properties:
+    type: string_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  user_id: true

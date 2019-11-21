@@ -2,6 +2,7 @@
 
 namespace Drupal\sdv_mapeditor\Form;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -44,6 +45,27 @@ class SdvMapEntityForm extends ContentEntityForm {
 
     $form_state->set('page_num', 1);
 
+    $default_value = $form_state->getValue('base_map') ? $form_state->getValue('base_map') : 1;
+    $form['base_map'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Base maps'),
+      '#multiple' => TRUE,
+      '#options' => [
+        '1' => 'Openbasiskaart',
+        '2' => 'Openbasiskaart grijs',
+        '3' => 'Openbasiskaart pastel',
+        '4' => 'Luchtfoto',
+        '5' => 'Topografisch',
+      ],
+      '#default_value' => $default_value,
+      '#description' => 'Select Multiple',
+      '#chosen' => TRUE,
+    ];
+
+
+
+
+
 
     // Group submit handlers in an actions element with a key of "actions" so
     // that it gets styled correctly, and so that other modules may add actions
@@ -51,6 +73,9 @@ class SdvMapEntityForm extends ContentEntityForm {
     $form['actions'] = [
       '#type' => 'actions',
     ];
+
+
+
 
     $form['actions']['next'] = [
       '#type' => 'submit',
@@ -71,6 +96,14 @@ class SdvMapEntityForm extends ContentEntityForm {
    */
   public function save(array $form, FormStateInterface $form_state) {
     $entity = $this->entity;
+
+    $values = $form_state->getValues();
+    $values = Json::encode($values);
+
+    $entity->set('map_properties', $values);
+
+
+
 
     $status = parent::save($form, $form_state);
 
@@ -118,7 +151,7 @@ class SdvMapEntityForm extends ContentEntityForm {
     $form_state
       ->set('page_values', [
         // Keep only first step values to minimize stored data.
-        'first_name' => $form_state->getValue('first_name'),
+        'base_map' => $form_state->getValue('base_map'),
         'last_name' => $form_state->getValue('last_name'),
         'birth_year' => $form_state->getValue('birth_year'),
       ])
@@ -127,6 +160,8 @@ class SdvMapEntityForm extends ContentEntityForm {
       // builder to rebuild the form. Otherwise, even though we set 'page_num'
       // to 2, the AJAX-rendered form will still show page 1.
       ->setRebuild(TRUE);
+    echo 'hi';
+
   }
 
   /**
@@ -147,9 +182,6 @@ class SdvMapEntityForm extends ContentEntityForm {
       '#title' => $this->t('A basic multistep form (page 2)'),
     ];
 
-    $form['name'] = [
-      '#access' => FALSE
-    ];
 
 
     $form['color'] = [
@@ -166,11 +198,6 @@ class SdvMapEntityForm extends ContentEntityForm {
       // We won't bother validating the required 'color' field, since they
       // have to come back to this page to submit anyway.
       '#limit_validation_errors' => [],
-    ];
-    $form['submit'] = [
-      '#type' => 'submit',
-      '#button_type' => 'primary',
-      '#value' => $this->t('Submit'),
     ];
 
     return $form;

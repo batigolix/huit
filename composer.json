@@ -13,6 +13,36 @@
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "rivm-syso/sdv-gis",
+                "version": "master",
+                "type": "drupal-module",
+                "dist": {
+                    "url": "https://github.com/rivm-syso/sdv-gis/archive/master.zip",
+                    "type": "zip"
+                },
+                "require": {
+                    "composer/installers": "^1.2.0"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "harvesthq/chosen",
+                "version": "1.8.2",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/harvesthq/chosen/releases/download/v1.8.2/chosen_v1.8.2.zip",
+                    "type": "zip"
+                },
+                "require": {
+                    "composer/installers": "^1.2.0"
+                }
+            }
         }
     ],
     "require": {
@@ -20,8 +50,12 @@
         "composer/installers": "^1.2",
         "cweagans/composer-patches": "^1.6.5",
         "drupal-composer/drupal-scaffold": "^2.5",
+        "drupal/chosen": "^2.8",
+        "drupal/config_devel": "^1.4",
+        "drupal/config_installer": "^1.8",
         "drupal/console": "^1.0.2",
         "drupal/core": "^8.7.0",
+        "drupal/devel": "^2.1",
         "drupal/examples": "^1.0",
         "drupal/inline_entity_form": "^1.0@RC",
         "drupal/leaflet": "^1.22",
@@ -29,6 +63,8 @@
         "drupal/openlayersd8": "^1.2",
         "drupal/search_api": "^1.15",
         "drush/drush": "^9.0.0",
+        "harvesthq/chosen": "^1.8",
+        "rivm-syso/sdv-gis": "master",
         "vlucas/phpdotenv": "^2.4",
         "webflo/drupal-finder": "^1.0.0",
         "webmozart/path-util": "^2.3",
@@ -70,6 +106,9 @@
         "patchLevel": {
             "drupal/core": "-p2"
         },
+        "installer-types": [
+            "drupal-library"
+        ],
         "installer-paths": {
             "web/core": ["type:drupal-core"],
             "web/libraries/{$name}": ["type:drupal-library"],

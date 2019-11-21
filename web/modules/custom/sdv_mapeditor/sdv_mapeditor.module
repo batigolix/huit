@@ -6,7 +6,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
-
+use Drupal\Core\Form\FormStateInterface;
 /**
  * Implements hook_help().
  */
@@ -32,4 +32,58 @@ function sdv_mapeditor_theme() {
       'render element' => 'children',
     ],
   ];
+}
+
+
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Sets the right libraries and passes data to javascript functions about
+ * several sources of layers.
+ *
+ * The layers for each layer-type are read from different sources:
+ *     - WMS:		  		The layers are read from the geo-server via a GetCapabilities request
+ *	   - URL:  				The layer has its own URL
+ *
+ */
+
+function sdv_mapeditor_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+
+
+  if ($form_id == 'sdv_map_add_form' || $form_id == 'sdv_map_edit_form') {
+
+dpm($form_state->get('page_num'));
+
+$form['status']['#access'] = false;
+
+    $form['show'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Show configuration'),
+    ];
+
+
+    $form['map_layers']['#states'] = [
+      'invisible' => [
+        ':input[name="show"]' => ['checked' => FALSE],
+      ],
+    ];
+    $form['map_properties']['#states'] = [
+      'invisible' => [
+        ':input[name="show"]' => ['checked' => FALSE],
+      ],
+    ];
+
+
+
+
+    if ($form_state->has('page_num') && $form_state->get('page_num') == 2) {
+      $form['actions']['back'] = $form['back'];
+      unset($form['back']);
+//      return self::fapiExamplePageTwo($form, $form_state);
+    }
+    echo 'hi';
+
+  }
 }
