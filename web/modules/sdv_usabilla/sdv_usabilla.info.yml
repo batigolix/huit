@@ -1,0 +1,5 @@
+name: 'SDV Usabilla'
+type: module
+description: 'SDV Usabilla'
+core: 8.x
+package: 'SDV'

@@ -1,0 +1,13 @@
+{
+    "name": "sdv_usabilla",
+    "type": "drupal-module",
+    "description": "SDV Usabilla",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/sdv_usabilla",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/sdv_usabilla",
+        "source": "http://cgit.drupalcode.org/sdv_usabilla",
+    }
+}
