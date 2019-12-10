@@ -1,0 +1,4 @@
+usabilla:
+  version: 1.0
+  js:
+    usabilla.js: {}

@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Contains sdv_usabilla.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function sdv_usabilla_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the sdv_usabilla module.
+    case 'help.page.sdv_usabilla':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('SDV Usabilla') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function sdv_usabilla_theme() {
+  return [
+    'sdv_usabilla' => [
+      'render element' => 'children',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function sdv_usabilla_page_attachments(array &$attachments) {
+  $manager = \Drupal::service('usabilla.attach');
+  $manager->getAttachment($attachments);
+}
