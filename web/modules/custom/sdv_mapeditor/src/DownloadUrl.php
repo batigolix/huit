@@ -43,12 +43,16 @@ class DownloadUrl implements DownloadUrlInterface {
   }
 
   public function download($url, $path) {
-    if (system_retrieve_file($url, "${path}/test.html", FALSE, $this->fileSystem::EXISTS_REPLACE)) {
-      $this->logger->notice("${url} saved to ${path}");
+
+    $basename = basename($url);
+    $destination = "${path}/${basename}";
+
+    if (system_retrieve_file($url, "${destination}", FALSE, $this->fileSystem::EXISTS_REPLACE)) {
+      $this->logger->notice("${url} saved to ${destination}");
       return true;
     }
     else {
-      $this->logger->error("Could not save ${url} to ${path}");
+      $this->logger->error("Could not save ${url} to ${destination}");
       return false;
     }
 
