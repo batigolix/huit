@@ -5,7 +5,6 @@ namespace Drupal\sdv_usabilla;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Theme\ThemeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\language\ConfigurableLanguageManagerInterface;
 
 /**
  * Class UsabillaAttach.
@@ -64,27 +63,14 @@ class UsabillaAttach {
     $addAttachment = $this->checkAddAttachmentIfLoggedIn();
 
     $active_theme = $this->themeManager->getActiveTheme()->getName();
+//$selected_themes = $this->config->get('themes');
+    $selected_themes = ['bartik'];
 
-
-    if (in_array($active_theme, $this->config->get('themes'))) {
-
-      $currentLanguage = $this->languageManager
-        ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-        ->getId();
-
+    if (in_array($active_theme, $selected_themes)) {
       $language = $this->languageManager->getCurrentLanguage()->getId();
       $gtmId = $this->config->get($language . '_gtm_id');
 
-      $attachments['#attached']['html_head'][] = [
-        [
-          '#type' => 'html_tag',
-          '#tag' => 'script',
-          '#value' => $this->scriptSnippet($gtmId),
-          '#weight' => 9,
-
-        ],
-        'GtmManagerService',
-      ];
+      $attachments['#attached']['library'][] = 'sdv_usabilla/usabilla';
     }
   }
 
@@ -97,7 +83,7 @@ class UsabillaAttach {
   private function scriptSnippet($container_id) {
     // Build script snippet.
     return <<<EOS
-alert('szdfsdf');
+
 EOS;
   }
 
