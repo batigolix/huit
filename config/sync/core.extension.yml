@@ -17,8 +17,11 @@ module:
   datetime: 0
   dblog: 0
   devel: 0
+  devel_generate: 0
   dynamic_page_cache: 0
   editor: 0
+  embed: 0
+  entity_embed: 0
   entity_multi_step_form: 0
   examples: 0
   field: 0
@@ -33,6 +36,7 @@ module:
   inline_entity_form: 0
   leaflet: 0
   link: 0
+  media: 0
   menu_ui: 0
   multistep_form_api: 0
   node: 0
@@ -44,6 +48,7 @@ module:
   rdf: 0
   sdv_gis: 0
   sdv_mapeditor: 0
+  sdv_usabilla: 0
   search: 0
   search_api: 0
   shortcut: 0
