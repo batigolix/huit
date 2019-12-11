@@ -1,0 +1,7 @@
+services:
+  logger.channel.sdv_mapeditor:
+    parent: logger.channel_base
+    arguments: ['sdv_mapeditor']
+  sdv_mapeditor.download_url:
+    class: Drupal\sdv_mapeditor\DownloadUrl
+    arguments: ['@file_system', '@logger.channel.sdv_mapeditor']

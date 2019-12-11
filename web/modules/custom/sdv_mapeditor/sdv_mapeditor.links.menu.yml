@@ -12,3 +12,9 @@ sdv_map.admin.structure.settings:
   description: 'Configure Map entities'
   route_name: sdv_map.settings
   parent: system.admin_structure
+sdv_mapeditor.default_form:
+  title: 'DefaultForm'
+  route_name: sdv_mapeditor.default_form
+  description: 'A description for the menu entry'
+  parent: system.admin_config_system
+  weight: 99

@@ -1,0 +1,9 @@
+sdv_mapeditor.default_form:
+  path: '/admin/config/sdv_mapeditor/default'
+  defaults:
+    _form: '\Drupal\sdv_mapeditor\Form\DefaultForm'
+    _title: 'DefaultForm'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
