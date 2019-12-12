@@ -6,24 +6,22 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\migrate\Plugin\migrate\process\Download;
-use Drupal\sdv_mapeditor\DownloadUrlInterface;
+use Drupal\sdv_mapeditor\FileHandlerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class DefaultForm.
+ * Class SettingsForm.
  */
-class DefaultForm extends ConfigFormBase {
+class SettingsForm extends ConfigFormBase {
 
-  public function __construct(ConfigFactoryInterface $config_factory, DownloadUrlInterface $downloadUrl) {
+  public function __construct(ConfigFactoryInterface $config_factory, FileHandlerInterface $fileHandler) {
     parent::__construct($config_factory);
-    $this->downloadUrl = $downloadUrl;
+    $this->fileHandler = $fileHandler;
   }
 
-
   public static function create(ContainerInterface $container) {
-
-    $downloadUrl = $container->get('sdv_mapeditor.download_url');
-    return new static($container->get('config.factory'), $downloadUrl);
+    $fileHandler = $container->get('sdv_mapeditor.filehandler');
+    return new static($container->get('config.factory'), $fileHandler);
   }
 
   /**
@@ -31,7 +29,7 @@ class DefaultForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'sdv_mapeditor.default',
+      'sdv_mapeditor.settings',
     ];
   }
 
@@ -39,24 +37,24 @@ class DefaultForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'default_form';
+    return 'settings_form';
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('sdv_mapeditor.default');
+    $config = $this->config('sdv_mapeditor.settings');
     $form['test'] = [
-      '#markup' => $this->t('Define the GIS IA library. These will be downloaded and extracted from a zip file (preferably from github)'),
+      '#markup' => $this->t('Define the GIS IA library. This will be downloaded to the defined local GIS IA folder and extracted there from a zip file (preferably from github)'),
       '#weight'=>-10,
     ];
     $form['folder'] = [
       '#type' => 'textfield',
-      '#length' => 60,
-      '#title' => $this->t('GIS Folder'),
+      '#size' => 45,
+      '#title' => $this->t('GIS IA Folder'),
       '#default_value' => $config->get('folder'),
-      '#description' => $this->t('Folder where to extract and store the GIS IA library files. This must start with public:// . Files will be stored in the public files directory'),
+      '#description' => $this->t('Local folder where to extract and store the GIS IA library files. This must start with public:// . Files will be stored in the public files directory'),
       '#weight'=>10,
     ];
     $form['version'] = [
@@ -69,6 +67,7 @@ class DefaultForm extends ConfigFormBase {
     ];
     $form['url'] = [
       '#type' => 'url',
+      '#size' => 80,
       '#title' => $this->t('GIS library URL'),
       '#default_value' => $config->get('url') ? $config->get('url') : 'https://github.com/rivm-syso/sdv-gis/archive/master.zip',
       '#description' => $this->t('URL of the GIS library. This will be stored and extracted in the GIS folder. Preferably a ip file'),
@@ -81,9 +80,13 @@ class DefaultForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+
+    // Validates GIS IA folder path is using public stream wrapper.
     if (substr($form_state->getValue('folder'), 0, 9) !== 'public://' ) {
       $form_state->setErrorByName('folder', $this->t('Folder name must start with public://'));
     }
+
+    // Validates GIS IA library file has the .zip extension.
     if (substr($form_state->getValue('url'), -strlen('.zip')) !=='.zip') {
       $form_state->setErrorByName('folder', $this->t('File extension must be .zip'));
     }
@@ -95,28 +98,23 @@ class DefaultForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $path = $this->downloadUrl->createFolder($form_state->getValue('folder'));
+    // Creates the GIS IA folder.
+    $path = $this->fileHandler->createFolder($form_state->getValue('folder'));
 
+    // Downloads and extracts the GIS IA library.
     if($path) {
-//      $this->downloadUrl->download($form_state->getValue('gis_ia_url'), $path);
-      $file = $this->downloadUrl->download($form_state->getValue('url'), $path);
-
+      $file = $this->fileHandler->download($form_state->getValue('url'), $path);
       if ($file) {
-        $this->downloadUrl->extract($file, $path);
+        $this->fileHandler->extract($file, $path);
       }
-
-
     }
 
-    $this->config('sdv_mapeditor.default')
+    // Saves the configuration
+    $this->config('sdv_mapeditor.settings')
       ->set('url', $form_state->getValue('url'))
       ->set('folder', $form_state->getValue('folder'))
+      ->set('version', $form_state->getValue('version'))
       ->save();
-
-
-
-
   }
-
 
 }

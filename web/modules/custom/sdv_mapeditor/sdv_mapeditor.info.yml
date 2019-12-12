@@ -7,4 +7,4 @@ dependencies:
 #  - paragraphs
   - node
 config_devel:
-  - sdv_mapeditor.default
+  - sdv_mapeditor.settings

@@ -125,8 +125,8 @@ function sdv_mapeditor_page_attachments(array &$attachments) {
  */
 function sdv_mapeditor_library_info_build() {
 
-  $config = \Drupal::config('sdv_mapeditor.default');
-  $manager = \Drupal::service('sdv_mapeditor.download_url');
+  $config = \Drupal::config('sdv_mapeditor.settings');
+  $manager = \Drupal::service('sdv_mapeditor.filehandler');
 
   $libraries = [];
 
@@ -149,6 +149,5 @@ function sdv_mapeditor_library_info_build() {
     $libraries['sdv_mapeditor.gis']['css']['base'][$css_file->uri] = [];
   }
 
-  echo 1;
   return $libraries;
 }
