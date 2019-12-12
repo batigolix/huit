@@ -6,3 +6,5 @@ package: 'Custom'
 dependencies:
 #  - paragraphs
   - node
+config_devel:
+  - sdv_mapeditor.default

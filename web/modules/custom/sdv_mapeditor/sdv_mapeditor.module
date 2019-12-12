@@ -7,6 +7,9 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Form\FormStateInterface;
+
+
+
 /**
  * Implements hook_help().
  */
@@ -86,4 +89,66 @@ $form['status']['#access'] = false;
     echo 'hi';
 
   }
+}
+
+
+
+/**
+ * Implements hook_page_attachments().
+ */
+function sdv_mapeditor_page_attachments(array &$attachments) {
+//  $manager = \Drupal::service('sdv_mapeditor.download_url');
+//  $files = $manager->list('public://gis_ia');
+
+
+  $attachments['#attached']['library'][] = 'sdv_mapeditor/sdv_mapeditor.gis';
+
+}
+
+
+
+
+
+/**
+ * Add dynamic library definitions.
+ *
+ * Modules may implement this hook to add dynamic library definitions. Static
+ * libraries, which do not depend on any runtime information, should be declared
+ * in a modulename.libraries.yml file instead.
+ *
+ * @return array[]
+ *   An array of library definitions to register, keyed by library ID. The
+ *   library ID will be prefixed with the module name automatically.
+ *
+ * @see core.libraries.yml
+ * @see hook_library_info_alter()
+ */
+function sdv_mapeditor_library_info_build() {
+
+  $config = \Drupal::config('sdv_mapeditor.default');
+  $manager = \Drupal::service('sdv_mapeditor.download_url');
+
+  $libraries = [];
+
+  // Add a library whose information changes depending on certain conditions.
+  $libraries['sdv_mapeditor.gis'] = [
+    'version' => $config->get('version'),
+    'dependencies' => [
+      'core/jquery',
+      'core/jquery.ui.autocomplete',
+      'core/jquery',
+      'core/jquery.ui.autocomplete',
+      'core/jquery.ui.effects.slide',
+      'core/jquery.ui.position',
+      'core/drupal.ajax',
+    ],
+  ];
+
+  $css_files = $manager->list($config->get('folder'), '/.*\\.css$/');
+  foreach ($css_files as $css_file) {
+    $libraries['sdv_mapeditor.gis']['css']['base'][$css_file->uri] = [];
+  }
+
+  echo 1;
+  return $libraries;
 }
