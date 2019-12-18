@@ -27,6 +27,14 @@ interface SdvMapEntityInterface extends ContentEntityInterface, EntityChangedInt
   public function getName();
 
   /**
+   * Gets the Map description.
+   *
+   * @return string
+   *   Description of the Map.
+   */
+  public function getDescription();
+
+  /**
    * Sets the Map name.
    *
    * @param string $name

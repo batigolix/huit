@@ -18,6 +18,7 @@ module:
   datetime: 0
   dblog: 0
   devel: 0
+  devel_entity_updates: 0
   devel_generate: 0
   dynamic_page_cache: 0
   editor: 0
@@ -46,7 +47,6 @@ module:
   path: 0
   quickedit: 0
   rdf: 0
-  sdv_gis: 0
   sdv_mapeditor: 0
   sdv_usabilla: 0
   search: 0

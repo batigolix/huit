@@ -3,13 +3,13 @@
 entity.sdv_map.collection:
   title: 'Map list'
   route_name: entity.sdv_map.collection
-  description: 'List Map entities'
+  description: 'List maps'
   parent: system.admin_structure
   weight: 100
 
 sdv_map.admin.structure.settings:
   title: 'Map settings'
-  description: 'Configure Map entities'
+  description: 'Configure maps'
   route_name: sdv_map.settings
   parent: system.admin_structure
 sdv_mapeditor.settings_form:

@@ -19,6 +19,8 @@ class SdvMapEntityListBuilder extends EntityListBuilder {
   public function buildHeader() {
     $header['id'] = $this->t('Map ID');
     $header['name'] = $this->t('Name');
+    $header['description'] = $this->t('Description');
+    $header['author'] = $this->t('Author');
     return $header + parent::buildHeader();
   }
 
@@ -33,6 +35,8 @@ class SdvMapEntityListBuilder extends EntityListBuilder {
       'entity.sdv_map.edit_form',
       ['sdv_map' => $entity->id()]
     );
+    $row['description'] = $entity->getDescription();
+    $row['author'] = $entity->getOwner()->label();
     return $row + parent::buildRow($entity);
   }
 

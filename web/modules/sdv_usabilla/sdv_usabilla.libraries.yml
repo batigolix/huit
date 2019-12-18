@@ -2,3 +2,7 @@ usabilla:
   version: 1.0
   js:
     usabilla.js: {}
+widget:
+  version: 1.0
+  js:
+    widget.js: {}

@@ -5,9 +5,9 @@
  * Contains sdv_mapeditor.module.
  */
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Form\FormStateInterface;
-
 
 
 /**
@@ -38,7 +38,6 @@ function sdv_mapeditor_theme() {
 }
 
 
-
 /**
  * Implements hook_form_alter().
  *
@@ -46,67 +45,66 @@ function sdv_mapeditor_theme() {
  * several sources of layers.
  *
  * The layers for each layer-type are read from different sources:
- *     - WMS:		  		The layers are read from the geo-server via a GetCapabilities request
- *	   - URL:  				The layer has its own URL
+ *     - WMS:          The layers are read from the geo-server via a
+ * GetCapabilities request
+ *     - URL:          The layer has its own URL
  *
  */
 
 function sdv_mapeditor_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-
-
-
   if ($form_id == 'sdv_map_add_form' || $form_id == 'sdv_map_edit_form') {
 
-dpm($form_state->get('page_num'));
+    // Hides the entity status field.
+    $form['status']['#access'] = FALSE;
 
-$form['status']['#access'] = false;
-
+    // Toggles the parameters and layer definitions fields.
     $form['show'] = [
       '#type' => 'checkbox',
-      '#title' => t('Show configuration'),
+      '#title' => t('Show parameters and layer definitions'),
+      '#weight' => 4,
     ];
-
-
-    $form['map_layers']['#states'] = [
+    $form['gis_ia_layers']['#states'] = [
       'invisible' => [
         ':input[name="show"]' => ['checked' => FALSE],
       ],
     ];
-    $form['map_properties']['#states'] = [
+    $form['gis_ia_params']['#states'] = [
       'invisible' => [
         ':input[name="show"]' => ['checked' => FALSE],
       ],
     ];
-
-
-
-
-    if ($form_state->has('page_num') && $form_state->get('page_num') == 2) {
-      $form['actions']['back'] = $form['back'];
-      unset($form['back']);
-//      return self::fapiExamplePageTwo($form, $form_state);
-    }
-    echo 'hi';
-
   }
-}
 
+  // Attaches the drupal library.
+  $form['#attached']['library'][] = 'sdv_mapeditor/sdv_gis_edit';
+
+  // Passes wms XML file content as JavaScript variables;
+  $xml = simplexml_load_file('https://geodata.rivm.nl/geoserver/wms?VERSION=1.1.1&REQUEST=GetCapabilities');
+  $wms = '';
+  if ($xml->Capability->Layer) {
+    foreach ($xml->Capability->Layer->children() as $layer) {
+      $name = $layer->Name;
+      $title = $layer->Title;
+      if ($name != '') {
+        $wms .= ($wms == '' ? '' : '|') . $name . '=' . $title;
+      }
+    }
+  }
+  $form['#attached']['drupalSettings']['gis_ia']['wms'] = $wms;
+  $urls = \Drupal::config('sdv_gis.sdv_gis')->get('urls');
+  $form['#attached']['drupalSettings']['gis_ia']['urls'] = $urls;
+}
 
 
 /**
  * Implements hook_page_attachments().
  */
 function sdv_mapeditor_page_attachments(array &$attachments) {
-//  $manager = \Drupal::service('sdv_mapeditor.download_url');
-//  $files = $manager->list('public://gis_ia');
-
-
-  $attachments['#attached']['library'][] = 'sdv_mapeditor/sdv_mapeditor.gis';
-
+  //  $manager = \Drupal::service('sdv_mapeditor.download_url');
+  //  $files = $manager->list('public://gis_ia');
+//  $attachments['#attached']['library'][] = 'sdv_mapeditor/sdv_gis';
+//  $attachments['#attached']['library'][] = 'sdv_mapeditor/sdv_gis_edit';
 }
-
-
-
 
 
 /**
@@ -124,30 +122,29 @@ function sdv_mapeditor_page_attachments(array &$attachments) {
  * @see hook_library_info_alter()
  */
 function sdv_mapeditor_library_info_build() {
-
+  // Converts config to list of libraries.
   $config = \Drupal::config('sdv_mapeditor.settings');
-  $manager = \Drupal::service('sdv_mapeditor.filehandler');
-
   $libraries = [];
-
-  // Add a library whose information changes depending on certain conditions.
-  $libraries['sdv_mapeditor.gis'] = [
-    'version' => $config->get('version'),
-    'dependencies' => [
-      'core/jquery',
-      'core/jquery.ui.autocomplete',
-      'core/jquery',
-      'core/jquery.ui.autocomplete',
-      'core/jquery.ui.effects.slide',
-      'core/jquery.ui.position',
-      'core/drupal.ajax',
-    ],
-  ];
-
-  $css_files = $manager->list($config->get('folder'), '/.*\\.css$/');
-  foreach ($css_files as $css_file) {
-    $libraries['sdv_mapeditor.gis']['css']['base'][$css_file->uri] = [];
+  $config_libraries = Json::decode($config->get('libraries'));
+  foreach ($config_libraries as $key => $library) {
+    $libraries[$key] = [
+      'version' => $config->get('version'),
+    ];
+    if (isset($library['css'])) {
+      foreach ($library['css'] as $css) {
+        $libraries[$key]['css']['layout'][$css] = [];
+      }
+    }
+    if (isset($library['js'])) {
+      foreach ($library['js'] as $js) {
+        $libraries[$key]['js'][$js] = [];
+      }
+    }
+    if (isset($library['dependencies'])) {
+      foreach ($library['dependencies'] as $dependency) {
+        $libraries[$key]['dependencies'][] = $dependency;
+      }
+    }
   }
-
   return $libraries;
 }

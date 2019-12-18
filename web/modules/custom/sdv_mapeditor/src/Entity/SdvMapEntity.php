@@ -80,6 +80,13 @@ class SdvMapEntity extends ContentEntityBase implements SdvMapEntityInterface {
   /**
    * {@inheritdoc}
    */
+  public function getDescription() {
+    return $this->get('description')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function setName($name) {
     $this->set('name', $name);
     return $this;
@@ -141,7 +148,7 @@ class SdvMapEntity extends ContentEntityBase implements SdvMapEntityInterface {
 
     $fields['user_id'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Authored by'))
-      ->setDescription(t('The user ID of author of the Map entity.'))
+      ->setDescription(t('The user ID of author of the map.'))
       ->setRevisionable(TRUE)
       ->setSetting('target_type', 'user')
       ->setSetting('handler', 'default')
@@ -165,7 +172,7 @@ class SdvMapEntity extends ContentEntityBase implements SdvMapEntityInterface {
 
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Map entity.'))
+      ->setDescription(t('The name of the map. Will be used in admin overview.'))
       ->setSettings([
         'max_length' => 50,
         'text_processing' => 0,
@@ -184,7 +191,28 @@ class SdvMapEntity extends ContentEntityBase implements SdvMapEntityInterface {
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
-    $fields['status']->setDescription(t('A boolean indicating whether the Map is published.'))
+    $fields['description'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Description'))
+      ->setDescription(t('Description of the map. Will be used in admin overview.'))
+      ->setSettings([
+        'max_length' => 120,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -2,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => -2,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(TRUE);
+
+    $fields['status']->setDescription(t('A boolean indicating whether the map is published.'))
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => -3,
@@ -198,43 +226,46 @@ class SdvMapEntity extends ContentEntityBase implements SdvMapEntityInterface {
       ->setLabel(t('Changed'))
       ->setDescription(t('The time that the entity was last edited.'));
 
-    $fields['map_properties'] = BaseFieldDefinition::create('string_long')
-      ->setLabel(t('GIS IA Params'))
-      ->setDescription(t('Parameters for the GIS IA'))
+
+
+
+    $fields['gis_ia_params'] = BaseFieldDefinition::create('string_long')
+      ->setLabel(t('GIS IA parameters'))
+      ->setDescription(t('This field will hold the serialized parameters for the GIS IA'))
       ->setRevisionable(TRUE)
       ->setDefaultValue('')
       ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'string',
-        'weight' => -6,
+        'weight' => 10,
       ])
       ->setDisplayOptions('form', [
         'type' => 'string_textarea',
         'settings' => [
           'rows' => 12,
         ],
-        'weight' => -6,
+        'weight' => 10,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(FALSE);
 
-    $fields['map_layers'] = BaseFieldDefinition::create('string_long')
-      ->setLabel(t('GIS IA Layers'))
-      ->setDescription(t('Layers for the GIS IA'))
+    $fields['gis_ia_layers'] = BaseFieldDefinition::create('string_long')
+      ->setLabel(t('GIS IA layers'))
+      ->setDescription(t('This field will hold the serialized layer definitions for the GIS IA'))
       ->setRevisionable(TRUE)
       ->setDefaultValue('')
       ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'string',
-        'weight' => -5,
+        'weight' => 12,
       ])
       ->setDisplayOptions('form', [
         'type' => 'string_textarea',
         'settings' => [
           'rows' => 12,
         ],
-        'weight' => -5,
+        'weight' => 12,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)

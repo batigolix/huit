@@ -111,4 +111,14 @@ class FileHandler implements FileHandlerInterface {
     return file_scan_directory($dir, $mask);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function checkIfExists($path) {
+    $root = \Drupal::root();
+    if (file_exists($root . $path)) {
+      return TRUE;
+    }
+    return FALSE;
+  }
 }

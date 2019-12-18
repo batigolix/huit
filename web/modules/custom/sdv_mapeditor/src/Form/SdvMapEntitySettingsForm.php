@@ -46,7 +46,7 @@ class SdvMapEntitySettingsForm extends FormBase {
    *   Form definition array.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['sdvmapentity_settings']['#markup'] = 'Settings form for Map entities. Manage field settings here.';
+    $form['sdvmapentity_settings']['#markup'] = 'Settings form for Maps. Manage field settings here.';
     return $form;
   }
 

@@ -18,7 +18,7 @@ interface FileHandlerInterface {
    */
   public function createFolder($path);
 
-    /**
+  /**
    * Downloads a file from a url to a local folder.
    *
    * @param string $url
@@ -54,6 +54,15 @@ interface FileHandlerInterface {
    */
   public function list($dir, $mask);
 
+  /**
+   * Check if a file exists.
+   *
+   * @param string $dir
+   *   The path of the file.
+   *
+   * @return bool
+   *   Returns true if the file exists, FALSE otherwise.
+   */
+  public function checkIfExists($path);
 
-
-  }
+}
