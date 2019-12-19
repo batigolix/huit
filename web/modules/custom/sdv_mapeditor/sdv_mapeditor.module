@@ -6,56 +6,65 @@
  */
 
 use Drupal\Component\Serialization\Json;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Form\FormStateInterface;
-
-
-/**
- * Implements hook_help().
- */
-function sdv_mapeditor_help($route_name, RouteMatchInterface $route_match) {
-  switch ($route_name) {
-    // Main module help for the sdv_mapeditor module.
-    case 'help.page.sdv_mapeditor':
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('SDV Mapeditor') . '</p>';
-      return $output;
-
-    default:
-  }
-}
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_theme().
  */
 function sdv_mapeditor_theme() {
   return [
-    'sdv_mapeditor' => [
-      'render element' => 'children',
+    'sdv_map' => [
+      'render element' => 'elements',
+    ],
+    'gis_ia_edit_help' => [
+      'render element' => 'elements',
     ],
   ];
 }
 
+/**
+ * Prepares variables for map template.
+ */
+function template_preprocess_sdv_map(&$variables) {
+  $sdv_map = $variables['elements']['#sdv_map'];
+
+  // Provides map ID for the template.
+  $variables['node_id'] = $sdv_map->id();
+
+  // Provides $content variable for template.
+  $variables['content'] = [];
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+
+  // Provides the color for the template.
+  // @todo figure out if used.
+  $uiterlijk = $sdv_map->getAppearance();
+
+  // Provides the parameters with ot without layer definitions for the template.
+  $parameters = $sdv_map->getParameters();
+  if($sdv_map->getLayers()) {
+    $parameters .= $sdv_map->getLayers();
+  }
+  $variables['parms'] = $parameters;
+
+  // Passes on layer server urls.
+  $urls = \Drupal::config('sdv_mapeditor.settings')->get('urls');
+  $variables['urls'] = $urls;
+
+  // Provides folder name for the template.
+  // @todo figure out what is used for.
+  $variables['dwnld'] = __DIR__;
+}
 
 /**
  * Implements hook_form_alter().
- *
- * Sets the right libraries and passes data to javascript functions about
- * several sources of layers.
- *
- * The layers for each layer-type are read from different sources:
- *     - WMS:          The layers are read from the geo-server via a
- * GetCapabilities request
- *     - URL:          The layer has its own URL
- *
  */
-
 function sdv_mapeditor_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if ($form_id == 'sdv_map_add_form' || $form_id == 'sdv_map_edit_form') {
-
-    // Hides the entity status field.
-    $form['status']['#access'] = FALSE;
 
     // Toggles the parameters and layer definitions fields.
     $form['show'] = [
@@ -73,53 +82,28 @@ function sdv_mapeditor_form_alter(&$form, FormStateInterface $form_state, $form_
         ':input[name="show"]' => ['checked' => FALSE],
       ],
     ];
-  }
 
-  // Attaches the drupal library.
-  $form['#attached']['library'][] = 'sdv_mapeditor/sdv_gis_edit';
+    // Sets name field on top.
+    // @todo fix this in the entity class.
+    $form['name']['#weight'] = -10;
+    $form['description']['#weight'] = 0;
 
-  // Passes wms XML file content as JavaScript variables;
-  $xml = simplexml_load_file('https://geodata.rivm.nl/geoserver/wms?VERSION=1.1.1&REQUEST=GetCapabilities');
-  $wms = '';
-  if ($xml->Capability->Layer) {
-    foreach ($xml->Capability->Layer->children() as $layer) {
-      $name = $layer->Name;
-      $title = $layer->Title;
-      if ($name != '') {
-        $wms .= ($wms == '' ? '' : '|') . $name . '=' . $title;
-      }
-    }
+    // Attaches the sdv_gis_edit library (providing the gis ia edit form).
+    $form['#attached']['library'][] = 'sdv_mapeditor/sdv_gis_edit';
+
+    // Passes WMS XML file content as JavaScript variables;
+    $filehandler = \Drupal::service('sdv_mapeditor.filehandler');
+    $form['#attached']['drupalSettings']['gis_ia']['wms'] = $filehandler->getWms();
+
+    // Passes urls of map servers to the gis ia JavaScript.
+    // @todo make more specific.
+    $urls = \Drupal::config('sdv_mapeditor.settings')->get('servers');
+    $form['#attached']['drupalSettings']['gis_ia']['urls'] = $urls;
   }
-  $form['#attached']['drupalSettings']['gis_ia']['wms'] = $wms;
-  $urls = \Drupal::config('sdv_gis.sdv_gis')->get('urls');
-  $form['#attached']['drupalSettings']['gis_ia']['urls'] = $urls;
 }
 
-
 /**
- * Implements hook_page_attachments().
- */
-function sdv_mapeditor_page_attachments(array &$attachments) {
-  //  $manager = \Drupal::service('sdv_mapeditor.download_url');
-  //  $files = $manager->list('public://gis_ia');
-//  $attachments['#attached']['library'][] = 'sdv_mapeditor/sdv_gis';
-//  $attachments['#attached']['library'][] = 'sdv_mapeditor/sdv_gis_edit';
-}
-
-
-/**
- * Add dynamic library definitions.
- *
- * Modules may implement this hook to add dynamic library definitions. Static
- * libraries, which do not depend on any runtime information, should be declared
- * in a modulename.libraries.yml file instead.
- *
- * @return array[]
- *   An array of library definitions to register, keyed by library ID. The
- *   library ID will be prefixed with the module name automatically.
- *
- * @see core.libraries.yml
- * @see hook_library_info_alter()
+ * Implements hook_library_info_alter().
  */
 function sdv_mapeditor_library_info_build() {
   // Converts config to list of libraries.
@@ -147,4 +131,21 @@ function sdv_mapeditor_library_info_build() {
     }
   }
   return $libraries;
+}
+
+/**
+ * Implements hook_entity_view().
+ */
+function sdv_mapeditor_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+
+  // Attaches map entity specific libraries.
+  if ($entity->bundle() == 'sdv_map') {
+
+    // Attaches the gis_ia library.
+    $build['#attached']['library'][] = 'sdv_mapeditor/sdv_gis';
+
+    // Attaches specific styling library.
+    $appearance = $entity->getAppearance();
+    $build['#attached']['library'][] = 'sdv_mapeditor/sdv_gis_' . $appearance;
+  }
 }

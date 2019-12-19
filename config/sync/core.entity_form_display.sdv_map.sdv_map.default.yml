@@ -9,6 +9,30 @@ targetEntityType: sdv_map
 bundle: sdv_map
 mode: default
 content:
+  description:
+    type: string_textfield
+    weight: -2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  gis_ia_layers:
+    type: string_textarea
+    settings:
+      rows: 12
+      placeholder: ''
+    weight: 12
+    region: content
+    third_party_settings: {  }
+  gis_ia_params:
+    type: string_textarea
+    settings:
+      rows: 12
+      placeholder: ''
+    weight: 10
+    region: content
+    third_party_settings: {  }
   map_layers:
     type: string_textarea
     weight: 2

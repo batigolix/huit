@@ -54,6 +54,38 @@ interface SdvMapEntityInterface extends ContentEntityInterface, EntityChangedInt
   public function getCreatedTime();
 
   /**
+   * Gets the Map last change timestamp.
+   *
+   * @return int
+   *   Updated timestamp of the Map.
+   */
+  public function getChangedTime();
+
+  /**
+   * Gets the value of the gi_ia_params field in a delimited format.
+   *
+   * @return string
+   *   Parameters in delimited format.
+   */
+  public function getParameters();
+
+  /**
+   * Gets the color from the value of the gi_ia_params field.
+   *
+   * @return string
+   *   Name of the color.
+   */
+  public function getAppearance();
+
+  /**
+   * Gets the layer definitions in delimited format.
+   *
+   * @return string
+   *   Layer definitions in delimited format.
+   */
+  public function getLayers();
+
+  /**
    * Sets the Map creation timestamp.
    *
    * @param int $timestamp
@@ -63,5 +95,16 @@ interface SdvMapEntityInterface extends ContentEntityInterface, EntityChangedInt
    *   The called Map entity.
    */
   public function setCreatedTime($timestamp);
+
+  /**
+   * Gets the map publication status.
+   *
+   * @param int $timestamp
+   *   The Map creation timestamp.
+   *
+   * @return string
+   *   Publication label.
+   */
+  public function getStatus();
 
 }

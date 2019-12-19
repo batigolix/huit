@@ -11,6 +11,8 @@ use Drupal\migrate\Plugin\migrate\process\Download;
 use Drupal\sdv_mapeditor\FileHandlerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Serialization\Json;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\ClientException;
 
 /**
  * Class SettingsForm.
@@ -48,8 +50,8 @@ class SettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('sdv_mapeditor.settings');
-    $form['test'] = [
-      '#markup' => $this->t('Define the GIS IA library. This will be downloaded to the defined local GIS IA folder and extracted there from a zip file (preferably from github)'),
+    $form['intro'] = [
+      '#markup' => $this->t('Defines the external sources used by GIS IA'),
       '#weight' => -10,
     ];
     $form['folder'] = [
@@ -58,16 +60,12 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('GIS IA Folder'),
       '#default_value' => $config->get('folder'),
       '#description' => $this->t('Local folder where to extract and store the GIS IA library files. This must start with public:// . Files will be stored in the public files directory'),
-      '#weight' => 10,
+      '#weight' => -10,
     ];
-    $form['version'] = [
-      '#type' => 'textfield',
-      '#size' => 15,
-      '#title' => $this->t('Version'),
-      '#default_value' => $config->get('version') ? $config->get('version') : '1.0',
-      '#description' => $this->t('Version number of the GIS IA library'),
-      '#weight' => -8,
-    ];
+
+
+
+
     $form['url'] = [
       '#type' => 'url',
       '#size' => 80,
@@ -77,18 +75,50 @@ class SettingsForm extends ConfigFormBase {
       '#weight' => 0,
     ];
 
-    $duh = Json::decode($config->get('libraries'));
-    $doh = Yaml::encode($duh);
+    // WMS URL provides layers from the geo-server via a GetCapabilities request.
+    $form['wms_url'] = [
+      '#type' => 'url',
+      '#size' => 80,
+      '#title' => $this->t('WMS URL'),
+      '#default_value' => $config->get('wms_url') ? $config->get('wms_url') : 'https://geodata.rivm.nl/geoserver/wms?VERSION=1.1.1&REQUEST=GetCapabilities',
+      '#description' => $this->t('URL of the XML file containing the WMS definitions. This will be downloaded and saved to the GIS folder.'),
+      '#weight' => 0,
+    ];
 
-    $libraries = $config->get('libraries') ? Json::decode($config->get('libraries')) : '';
-    echo 8;
+    // Layers from a specific URL.
+    $form['servers'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('URL'),
+      '#description' => $this->t('Enter the URL(s) of the map-server(s).'),
+      '#required' => TRUE,
+      '#size' => 64,
+      '#default_value' => $config->get('servers'),
+    ];
 
-    $form['libraries'] = [
+    $form['libraries_set'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Library settings'),
+      '#weight' => -8,
+    ];
+    $form['libraries_set']['version'] = [
+      '#type' => 'textfield',
+      '#size' => 15,
+      '#title' => $this->t('Version'),
+      '#default_value' => $config->get('version') ? $config->get('version') : '1.0',
+      '#description' => $this->t('Version number of the GIS IA library'),
+      '#weight' => -8,
+    ];
+
+    // Converts the libraries value from a serialized array to formatted
+    // yaml before displaying.
+    $storage = Json::decode($config->get('libraries'));
+    $libraries = Yaml::encode($storage);
+    $form['libraries_set']['libraries'] = [
       '#type' => 'textarea',
       '#rows' => 24,
       '#required' => TRUE,
       '#title' => $this->t('Libraries'),
-      '#default_value' => $doh,
+      '#default_value' => $libraries,
       '#description' => $this->t('Version number of the GIS IA library'),
       '#weight' => -8,
     ];
@@ -105,21 +135,31 @@ class SettingsForm extends ConfigFormBase {
       $form_state->setErrorByName('folder', $this->t('Folder name must start with public://'));
     }
 
-    // Validates GIS IA library file has the .zip extension.
-    if (substr($form_state->getValue('url'), -strlen('.zip')) !== '.zip') {
-      $form_state->setErrorByName('folder', $this->t('File extension must be .zip'));
+    // Validates WMS URL exists.
+    $client = \Drupal::httpClient();
+    try {
+      $response = $client->get($form_state->getValue('wms_url'), array('headers' => array('Accept' => 'text/plain')));
+      $data = (string) $response->getBody();
+      if (empty($data)) {
+        $form_state->setErrorByName('wms_url', $this->t('WMS URL is empty'));
+      }
+    }
+    catch (Exception $e) {
+      $form_state->setErrorByName('wms_url', $this->t('WMS URL cannot be reached error: %message', ['%message' => $e->getMessage()]));
     }
 
+    // Validates GIS IA library file has the .zip extension.
+    if (substr($form_state->getValue('url'), -strlen('.zip')) !== '.zip') {
+      $form_state->setErrorByName('url', $this->t('File extension must be .zip'));
+    }
 
+    // Validates YAML formatting.
     try {
-      // Decode the submitted import.
       $libraries = Yaml::decode($form_state->getValue('libraries'));
-      $doh = Yaml::encode($form_state->getValue('libraries'));
     } catch (InvalidDataTypeException $e) {
       $form_state->setErrorByName('libraries', $this->t('Settings can not be saved because of the following YAML error: %message', ['%message' => $e->getMessage()]));
     }
 
-    $files = [];
     foreach ($libraries as $key => $library) {
       if (isset($library['css'])) {
         foreach ($library['css'] as $css) {
@@ -136,8 +176,6 @@ class SettingsForm extends ConfigFormBase {
         }
       }
     }
-
-    echo 2;
 
   }
 
@@ -159,16 +197,17 @@ class SettingsForm extends ConfigFormBase {
     //    }
 
 
+    // Converts the libraries value to a serialized array, before storage.
     $libraries = Yaml::decode($form_state->getValue('libraries'));
     $libraries = Json::encode($libraries);
-
-    echo 9;
 
     // Saves the configuration
     $this->config('sdv_mapeditor.settings')
       ->set('url', $form_state->getValue('url'))
+      ->set('wms_url', $form_state->getValue('wms_url'))
       ->set('folder', $form_state->getValue('folder'))
       ->set('version', $form_state->getValue('version'))
+      ->set('servers', $form_state->getValue('servers'))
       ->set('libraries', $libraries)
       ->save();
 

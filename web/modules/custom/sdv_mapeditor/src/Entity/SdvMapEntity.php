@@ -80,6 +80,13 @@ class SdvMapEntity extends ContentEntityBase implements SdvMapEntityInterface {
   /**
    * {@inheritdoc}
    */
+  public function getStatus() {
+    return $this->get('status')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getDescription() {
     return $this->get('description')->value;
   }
@@ -97,6 +104,13 @@ class SdvMapEntity extends ContentEntityBase implements SdvMapEntityInterface {
    */
   public function getCreatedTime() {
     return $this->get('created')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getChangedTime() {
+    return $this->get('changed')->value;
   }
 
   /**
@@ -127,6 +141,64 @@ class SdvMapEntity extends ContentEntityBase implements SdvMapEntityInterface {
   public function setOwnerId($uid) {
     $this->set('user_id', $uid);
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getParameters() {
+    $parameters = '';
+    $body = $this->get('gis_ia_params')->value;
+    $body = preg_replace("/\r\n/", "\r", $body);
+    $body = preg_replace("/\n/", "\r", $body);
+    $body = explode("\r", $body);
+    foreach ($body as $b) {
+      if (substr($b, 0, 2) == 'm=') {
+        $b = 'm=' . base64_encode(htmlspecialchars(trim(substr($b, 2))));
+      }
+      $parameters .= ($parameters == '' ? '' : ',') . $b;
+      if (substr($b, 0, 2) == 'u=') {
+
+        // @todo fin out where this is used.
+        $uiterlijk = substr($b, 2);
+      }
+    }
+    return $parameters;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getAppearance() {
+    $uiterlijk = 'groen';
+    $body = $this->get('gis_ia_params')->value;
+    $body = preg_replace("/\r\n/", "\r", $body);
+    $body = preg_replace("/\n/", "\r", $body);
+    $body = explode("\r", $body);
+    foreach ($body as $b) {
+      if (substr($b, 0, 2) == 'u=') {
+        $uiterlijk = substr($b, 2);
+      }
+    }
+    return $uiterlijk;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getLayers() {
+    if ($this->get('gis_ia_layers')->value) {
+      $layers = ',ld=';
+      $ldefs = str_replace("\r\n", "\r", $this->get('gis_ia_layers')->value);
+      $ldefs = str_replace("\n", "\r", $ldefs);
+      $ldefs = explode("\r", $ldefs);
+      foreach ($ldefs as $ldef) {
+        if ($ldef != '') {
+          $layers .= base64_encode($ldef) . '|';
+        }
+      }
+      return $layers;
+    }
   }
 
   /**

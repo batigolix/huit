@@ -7,3 +7,11 @@ sdv_mapeditor.settings_form:
     _permission: 'access administration pages'
   options:
     _admin_route: TRUE
+
+sdv_mapeditor.gis_ia_edit_help:
+  path: '/admin/help/sdv_gis'
+  defaults:
+    _controller: '\Drupal\sdv_mapeditor\Controller\GisIaEditHelpController::build'
+    _title: 'GI IA edit help'
+  requirements:
+    _permission: 'access content'

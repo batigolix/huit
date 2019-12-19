@@ -65,4 +65,12 @@ interface FileHandlerInterface {
    */
   public function checkIfExists($path);
 
+  /**
+   * Provides list of WMS layers in a delimited format.
+   *
+   * @return string
+   *   List of WMS layers in delimited format.
+   */
+  public function getWms();
+
 }

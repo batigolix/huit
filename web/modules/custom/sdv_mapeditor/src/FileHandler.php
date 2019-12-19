@@ -4,6 +4,7 @@ namespace Drupal\sdv_mapeditor;
 
 use Drupal\Core\Archiver\ArchiverManager;
 use Drupal\Core\Archiver\Zip;
+use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Psr\Log\LoggerInterface;
@@ -36,13 +37,28 @@ class FileHandler implements FileHandlerInterface {
   protected $messenger;
 
   /**
+   * Drupal\Core\Config\ConfigFactory definition.
+   *
+   * @var \Drupal\Core\Config\ConfigFactory
+   */
+  protected $configFactory;
+
+  /**
+   * A configuration object.
+   *
+   * @var \Drupal\Core\Config\ImmutableConfig
+   */
+  protected $config;
+
+  /**
    * Constructs a new FileHandler object.
    */
-  public function __construct(FileSystemInterface $file_system, LoggerInterface $logger, ArchiverManager $plugin_manager_archiver, MessengerInterface $messenger) {
+  public function __construct(FileSystemInterface $file_system, LoggerInterface $logger, ArchiverManager $plugin_manager_archiver, MessengerInterface $messenger, ConfigFactory $configFactory) {
     $this->fileSystem = $file_system;
     $this->logger = $logger;
     $this->pluginManagerArchiver = $plugin_manager_archiver;
     $this->messenger = $messenger;
+    $this->configFactory = $configFactory;
   }
 
   /**
@@ -120,5 +136,25 @@ class FileHandler implements FileHandlerInterface {
       return TRUE;
     }
     return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWms() {
+    $this->config = $this->configFactory->get('sdv_mapeditor.settings');
+    $wms_url = $this->config->get('wms_url');
+    $xml = simplexml_load_file($wms_url);
+    $wms = '';
+    if ($xml->Capability->Layer) {
+      foreach ($xml->Capability->Layer->children() as $layer) {
+        $name = $layer->Name;
+        $title = $layer->Title;
+        if ($name != '') {
+          $wms .= ($wms == '' ? '' : '|') . $name . '=' . $title;
+        }
+      }
+    }
+    return $wms;
   }
 }

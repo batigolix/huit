@@ -13,8 +13,8 @@ sdv_map.admin.structure.settings:
   route_name: sdv_map.settings
   parent: system.admin_structure
 sdv_mapeditor.settings_form:
-  title: 'GIS IA library settings'
+  title: 'GIS IA settings'
   route_name: sdv_mapeditor.settings_form
-  description: 'Define the GIS IA library source, storage location, version'
+  description: 'Define the external sources (libraries, WMS, etc.) used by GIS IA'
   parent: system.admin_config_system
   weight: 99
