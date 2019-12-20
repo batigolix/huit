@@ -65,6 +65,7 @@
         "drupal/leaflet": "^1.22",
         "drupal/multistep_form_api": "0.x-dev",
         "drupal/openlayersd8": "^1.2",
+        "drupal/paragraphs": "^1.10",
         "drupal/search_api": "^1.15",
         "drush/drush": "^9.0.0",
         "harvesthq/chosen": "^1.8",
