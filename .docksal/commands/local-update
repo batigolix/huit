@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# provides actions to reset the the website to the state of the development
+# branch.
+# also to be used after the production db has been imported
+
+#-------------------------- Settings --------------------------------
+
+# PROJECT_ROOT and DOCROOT are set as env variables in cli
+SITE_DIRECTORY="default"
+DOCROOT_PATH="${PROJECT_ROOT}/${DOCROOT}"
+SITEDIR_PATH="${DOCROOT_PATH}/sites/${SITE_DIRECTORY}"
+DOW=$(date +%u)
+DRUSH="fin drush"
+COMPOSER="fin composer"
+
+#-------------------------- END: Settings --------------------------------
+
+#echo "Pulling latest code"
+#git pull
+
+echo "Installing packages"
+$COMPOSER install
+
+echo "Clearing drush cache"
+$DRUSH cc drush
+
+echo "Displaying Drush status"
+$DRUSH status
+
+$DRUSH config-set system.file path.temporary 'sites/default/files/temp' -y
+
+echo "Updating Drupal"
+$DRUSH cr
+$DRUSH cim -y
+$DRUSH updb -y
+$DRUSH cr
+$DRUSH entup
+
+# reset the solr container
+#fin reset solr
+
+# index the content
+#$DRUSH sapi-r content_index
+#$DRUSH sapi-i content_index
+
+$DRUSH cron
