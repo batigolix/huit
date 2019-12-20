@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - sdv_mapeditor
+id: sdv_map.embed
+label: Embed
+targetEntityType: sdv_map
+cache: true

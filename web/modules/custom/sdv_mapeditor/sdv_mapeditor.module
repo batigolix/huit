@@ -31,7 +31,11 @@ function sdv_mapeditor_theme() {
 function template_preprocess_sdv_map(&$variables) {
   $sdv_map = $variables['elements']['#sdv_map'];
 
+  // Provides the view mode for the template.
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+
   // Provides map ID for the template.
+  // @todo figure out if this map ID or node ID.
   $variables['node_id'] = $sdv_map->id();
 
   // Provides $content variable for template.
@@ -52,7 +56,7 @@ function template_preprocess_sdv_map(&$variables) {
   $variables['parms'] = $parameters;
 
   // Passes on layer server urls.
-  $urls = \Drupal::config('sdv_mapeditor.settings')->get('urls');
+  $urls = \Drupal::config('sdv_mapeditor.settings')->get('servers');
   $variables['urls'] = $urls;
 
   // Provides folder name for the template.
@@ -106,6 +110,7 @@ function sdv_mapeditor_form_alter(&$form, FormStateInterface $form_state, $form_
  * Implements hook_library_info_alter().
  */
 function sdv_mapeditor_library_info_build() {
+
   // Converts config to list of libraries.
   $config = \Drupal::config('sdv_mapeditor.settings');
   $libraries = [];

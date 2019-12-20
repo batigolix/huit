@@ -8,6 +8,12 @@
  * Available variables:
  * - content: A list of content items. Use 'content' to print all content, or
  * - attributes: HTML attributes for the container element.
+ *   @todo figure out node ID.
+ * - node_id: ID of the map
+ * - urls: urls for layers
+ * - view_mode: view mode of the map entity (default or embed)
+ * - parms: parameters for open layers map in delimited format
+ * - dwnld: module folder
  *
  * @see template_preprocess_sdv_map()
  *
@@ -22,8 +28,10 @@
   </div>
 </div>
 
-<div{{ attributes.addClass('sdv_map') }}>
-  {% if content %}
-    {{- content -}}
-  {% endif %}
-</div>
+{% if view_mode == "default" %}
+  <div{{ attributes.addClass('sdv_map') }}>
+    {% if content %}
+      {{- content -}}
+    {% endif %}
+  </div>
+{% endif %}

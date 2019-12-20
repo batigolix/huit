@@ -8,3 +8,4 @@ dependencies:
   - node
 config_devel:
   - sdv_mapeditor.settings
+  - core.entity_view_mode.sdv_map.embed
