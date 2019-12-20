@@ -2,11 +2,13 @@
 
 namespace Drupal\sdv_mapeditor;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Archiver\ArchiverManager;
 use Drupal\Core\Archiver\Zip;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Messenger\MessengerInterface;
+use GuzzleHttp\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -131,11 +133,38 @@ class FileHandler implements FileHandlerInterface {
    * {@inheritdoc}
    */
   public function checkIfExists($path) {
+
+    // Checks if file is external.
+    if (UrlHelper::isExternal($path) && $this->checkUrl($path)) {
+      return TRUE;
+    }
     $root = \Drupal::root();
     if (file_exists($root . $path)) {
       return TRUE;
     }
     return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function checkUrl($url) {
+    $client = \Drupal::httpClient();
+    try {
+      $response = $client->get($url, array('headers' => array('Accept' => 'text/plain')));
+      $data = (string) $response->getBody();
+      if (empty($data)) {
+        $this->logger->error('URL does not contain data');
+        $this->messenger->addError('URL does not contain data');
+        return false;
+      }
+    }
+    catch (RequestException $e) {
+      $this->logger->error("External URL cannot be reached. Error message: {$e->getMessage()}.");
+      $this->messenger->addError("External URL cannot be reached. Error message: {$e->getMessage()}.");
+      return false;
+    }
+    return true;
   }
 
   /**

@@ -7,8 +7,8 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Serialization\Yaml;
-use Drupal\migrate\Plugin\migrate\process\Download;
 use Drupal\sdv_mapeditor\FileHandlerInterface;
+use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Serialization\Json;
 use GuzzleHttp\Exception\GuzzleException;
@@ -136,16 +136,13 @@ class SettingsForm extends ConfigFormBase {
     }
 
     // Validates WMS URL exists.
-    $client = \Drupal::httpClient();
-    try {
-      $response = $client->get($form_state->getValue('wms_url'), array('headers' => array('Accept' => 'text/plain')));
-      $data = (string) $response->getBody();
-      if (empty($data)) {
-        $form_state->setErrorByName('wms_url', $this->t('WMS URL is empty'));
-      }
+    if ($this->fileHandler->checkUrl($form_state->getValue('wms_url'))==false) {
+      $form_state->setErrorByName('wms_url', $this->t('WMS URL is not valid'));
     }
-    catch (Exception $e) {
-      $form_state->setErrorByName('wms_url', $this->t('WMS URL cannot be reached error: %message', ['%message' => $e->getMessage()]));
+
+    // Validates server URLs exist.
+    if ($this->fileHandler->checkUrl($form_state->getValue('servers'))==false) {
+      $form_state->setErrorByName('servers', $this->t('URL map server is not valid'));
     }
 
     // Validates GIS IA library file has the .zip extension.
@@ -163,9 +160,12 @@ class SettingsForm extends ConfigFormBase {
     foreach ($libraries as $key => $library) {
       if (isset($library['css'])) {
         foreach ($library['css'] as $css) {
+
           if (!($this->fileHandler->checkIfExists($css))) {
             $form_state->setErrorByName('libraries', $this->t('File doesnt exist: %file', ['%file' => $css]));
           }
+
+
         }
       }
       if (isset($library['js'])) {
@@ -212,7 +212,7 @@ class SettingsForm extends ConfigFormBase {
       ->save();
 
     // Clears caches in order to rebuild library.
-    drupal_flush_all_caches();
+//    drupal_flush_all_caches();
 
   }
 

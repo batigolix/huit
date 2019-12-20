@@ -57,13 +57,24 @@ interface FileHandlerInterface {
   /**
    * Check if a file exists.
    *
-   * @param string $dir
+   * @param string $path
    *   The path of the file.
    *
    * @return bool
    *   Returns true if the file exists, FALSE otherwise.
    */
   public function checkIfExists($path);
+
+  /**
+   * Check if a file exists.
+   *
+   * @param string $url
+   *   The url of the resource.
+   *
+   * @return bool
+   *   Returns true if the url is valid, FALSE otherwise.
+   */
+  public function checkUrl($url);
 
   /**
    * Provides list of WMS layers in a delimited format.
