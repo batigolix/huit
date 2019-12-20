@@ -1,5 +1,7 @@
 <?php
 
+// @todo remove this file without breaking Drupal.
+
 namespace Drupal\sdv_mapeditor;
 
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -19,13 +21,6 @@ class SdvMapEntityHtmlRouteProvider extends AdminHtmlRouteProvider {
    */
   public function getRoutes(EntityTypeInterface $entity_type) {
     $collection = parent::getRoutes($entity_type);
-
-    $entity_type_id = $entity_type->id();
-
-    if ($settings_form_route = $this->getSettingsFormRoute($entity_type)) {
-      $collection->add("$entity_type_id.settings", $settings_form_route);
-    }
-
     return $collection;
   }
 

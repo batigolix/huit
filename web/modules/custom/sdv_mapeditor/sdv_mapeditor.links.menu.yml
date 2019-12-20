@@ -7,11 +7,6 @@ entity.sdv_map.collection:
   parent: system.admin_structure
   weight: 100
 
-sdv_map.admin.structure.settings:
-  title: 'Map settings'
-  description: 'Configure maps'
-  route_name: sdv_map.settings
-  parent: system.admin_structure
 sdv_mapeditor.settings_form:
   title: 'GIS IA settings'
   route_name: sdv_mapeditor.settings_form
