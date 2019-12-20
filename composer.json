@@ -51,6 +51,7 @@
         "cweagans/composer-patches": "^1.6.5",
         "drupal-composer/drupal-scaffold": "^2.5",
         "drupal/chosen": "^2.8",
+        "drupal/coder": "^8.3",
         "drupal/config_devel": "^1.4",
         "drupal/config_ignore": "^2.1",
         "drupal/config_installer": "^1.8",
@@ -82,6 +83,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
+        "bin-dir": "bin/",
         "sort-packages": true
     },
     "autoload": {
