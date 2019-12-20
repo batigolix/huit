@@ -2,7 +2,6 @@
 
 namespace Drupal\sdv_mapeditor\Form;
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -42,11 +41,10 @@ class SdvMapEntityForm extends ContentEntityForm {
     // Group submit handlers in an actions element with a key of "actions" so
     // that it gets styled correctly, and so that other modules may add actions
     // to the form. This is not required, but is convention.
-//    $form['actions'] = [
-//      '#type' => 'actions',
-//    ];
-//
-
+    //    $form['actions'] = [
+    //      '#type' => 'actions',
+    //    ];
+    // .
     return $form;
   }
 
@@ -57,8 +55,8 @@ class SdvMapEntityForm extends ContentEntityForm {
     $entity = $this->entity;
 
     $values = $form_state->getValues();
-//    $values = Json::encode($values);
-//    $entity->set('gis_ia_params', $values);
+    // $values = Json::encode($values);
+    //    $entity->set('gis_ia_params', $values);
     $status = parent::save($form, $form_state);
 
     switch ($status) {

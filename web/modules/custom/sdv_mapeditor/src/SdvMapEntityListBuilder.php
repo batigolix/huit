@@ -79,7 +79,7 @@ class SdvMapEntityListBuilder extends EntityListBuilder {
     );
     $row['description'] = Unicode::truncate($entity->getDescription(), 60, TRUE, TRUE);
     $row['author'] = $entity->getOwner()->label();
-    $row['status'] =  $entity->getStatus() == 1 ? $this->t('Published') : $this->t('Unpublished');
+    $row['status'] = $entity->getStatus() == 1 ? $this->t('Published') : $this->t('Unpublished');
     $row['changed'] = $this->dateFormatter->format($entity->getChangedTime(), 'short');
     $row['created'] = $this->dateFormatter->format($entity->getCreatedTime(), 'short');
     return $row + parent::buildRow($entity);

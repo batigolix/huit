@@ -28,7 +28,6 @@ class SdvMapEntityAccessControlHandler extends EntityAccessControlHandler {
           return AccessResult::allowedIfHasPermission($account, 'view unpublished map entities');
         }
 
-
         return AccessResult::allowedIfHasPermission($account, 'view published map entities');
 
       case 'update':
@@ -50,6 +49,5 @@ class SdvMapEntityAccessControlHandler extends EntityAccessControlHandler {
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
     return AccessResult::allowedIfHasPermission($account, 'add map entities');
   }
-
 
 }

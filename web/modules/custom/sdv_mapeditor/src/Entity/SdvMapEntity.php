@@ -298,9 +298,6 @@ class SdvMapEntity extends ContentEntityBase implements SdvMapEntityInterface {
       ->setLabel(t('Changed'))
       ->setDescription(t('The time that the entity was last edited.'));
 
-
-
-
     $fields['gis_ia_params'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('GIS IA parameters'))
       ->setDescription(t('This field will hold the serialized parameters for the GIS IA'))

@@ -151,20 +151,20 @@ class FileHandler implements FileHandlerInterface {
   public function checkUrl($url) {
     $client = \Drupal::httpClient();
     try {
-      $response = $client->get($url, array('headers' => array('Accept' => 'text/plain')));
+      $response = $client->get($url, ['headers' => ['Accept' => 'text/plain']]);
       $data = (string) $response->getBody();
       if (empty($data)) {
         $this->logger->error('URL does not contain data');
         $this->messenger->addError('URL does not contain data');
-        return false;
+        return FALSE;
       }
     }
     catch (RequestException $e) {
       $this->logger->error("External URL cannot be reached. Error message: {$e->getMessage()}.");
       $this->messenger->addError("External URL cannot be reached. Error message: {$e->getMessage()}.");
-      return false;
+      return FALSE;
     }
-    return true;
+    return TRUE;
   }
 
   /**
@@ -186,4 +186,5 @@ class FileHandler implements FileHandlerInterface {
     }
     return $wms;
   }
+
 }

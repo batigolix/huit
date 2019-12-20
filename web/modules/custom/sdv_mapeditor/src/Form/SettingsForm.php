@@ -8,22 +8,25 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\sdv_mapeditor\FileHandlerInterface;
-use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Serialization\Json;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\ClientException;
 
 /**
  * Class SettingsForm.
  */
 class SettingsForm extends ConfigFormBase {
 
+  /**
+   *
+   */
   public function __construct(ConfigFactoryInterface $config_factory, FileHandlerInterface $fileHandler) {
     parent::__construct($config_factory);
     $this->fileHandler = $fileHandler;
   }
 
+  /**
+   *
+   */
   public static function create(ContainerInterface $container) {
     $fileHandler = $container->get('sdv_mapeditor.filehandler');
     return new static($container->get('config.factory'), $fileHandler);
@@ -62,9 +65,6 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('Local folder where to extract and store the GIS IA library files. This must start with public:// . Files will be stored in the public files directory'),
       '#weight' => -10,
     ];
-
-
-
 
     $form['url'] = [
       '#type' => 'url',
@@ -136,12 +136,12 @@ class SettingsForm extends ConfigFormBase {
     }
 
     // Validates WMS URL exists.
-    if ($this->fileHandler->checkUrl($form_state->getValue('wms_url'))==false) {
+    if ($this->fileHandler->checkUrl($form_state->getValue('wms_url')) == FALSE) {
       $form_state->setErrorByName('wms_url', $this->t('WMS URL is not valid'));
     }
 
     // Validates server URLs exist.
-    if ($this->fileHandler->checkUrl($form_state->getValue('servers'))==false) {
+    if ($this->fileHandler->checkUrl($form_state->getValue('servers')) == FALSE) {
       $form_state->setErrorByName('servers', $this->t('URL map server is not valid'));
     }
 
@@ -153,7 +153,8 @@ class SettingsForm extends ConfigFormBase {
     // Validates YAML formatting.
     try {
       $libraries = Yaml::decode($form_state->getValue('libraries'));
-    } catch (InvalidDataTypeException $e) {
+    }
+    catch (InvalidDataTypeException $e) {
       $form_state->setErrorByName('libraries', $this->t('Settings can not be saved because of the following YAML error: %message', ['%message' => $e->getMessage()]));
     }
 
@@ -164,7 +165,6 @@ class SettingsForm extends ConfigFormBase {
           if (!($this->fileHandler->checkIfExists($css))) {
             $form_state->setErrorByName('libraries', $this->t('File doesnt exist: %file', ['%file' => $css]));
           }
-
 
         }
       }
@@ -192,16 +192,14 @@ class SettingsForm extends ConfigFormBase {
     //    if($path) {
     //      $file = $this->fileHandler->download($form_state->getValue('url'), $path);
     //      if ($file) {
-    ////        $this->fileHandler->extract($file, $path);
+    // $this->fileHandler->extract($file, $path);
     //      }
-    //    }
-
-
+    //    }.
     // Converts the libraries value to a serialized array, before storage.
     $libraries = Yaml::decode($form_state->getValue('libraries'));
     $libraries = Json::encode($libraries);
 
-    // Saves the configuration
+    // Saves the configuration.
     $this->config('sdv_mapeditor.settings')
       ->set('url', $form_state->getValue('url'))
       ->set('wms_url', $form_state->getValue('wms_url'))
@@ -212,9 +210,7 @@ class SettingsForm extends ConfigFormBase {
       ->save();
 
     // Clears caches in order to rebuild library.
-//    drupal_flush_all_caches();
-
+    //    drupal_flush_all_caches();
   }
-
 
 }

@@ -1,7 +1,6 @@
 <?php
 
 // @todo remove this file without breaking Drupal.
-
 namespace Drupal\sdv_mapeditor;
 
 use Drupal\Core\Entity\EntityTypeInterface;

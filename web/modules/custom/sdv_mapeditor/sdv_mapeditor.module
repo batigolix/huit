@@ -46,7 +46,7 @@ function template_preprocess_sdv_map(&$variables) {
 
   // Provides the parameters with ot without layer definitions for the template.
   $parameters = $sdv_map->getParameters();
-  if($sdv_map->getLayers()) {
+  if ($sdv_map->getLayers()) {
     $parameters .= $sdv_map->getLayers();
   }
   $variables['parms'] = $parameters;
@@ -91,7 +91,7 @@ function sdv_mapeditor_form_alter(&$form, FormStateInterface $form_state, $form_
     // Attaches the sdv_gis_edit library (providing the gis ia edit form).
     $form['#attached']['library'][] = 'sdv_mapeditor/sdv_gis_edit';
 
-    // Passes WMS XML file content as JavaScript variables;
+    // Passes WMS XML file content as JavaScript variables;.
     $filehandler = \Drupal::service('sdv_mapeditor.filehandler');
     $form['#attached']['drupalSettings']['gis_ia']['wms'] = $filehandler->getWms();
 
