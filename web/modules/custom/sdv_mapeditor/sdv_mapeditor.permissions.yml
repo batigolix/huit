@@ -1,16 +1,10 @@
-add map entities:
-  title: 'Create new maps'
-
 administer map entities:
   title: 'Administer maps'
   description: 'Allow to access the administration form to configure maps.'
   restrict access: true
 
-delete map entities:
-  title: 'Delete maps'
-
 edit map entities:
-  title: 'Edit maps'
+  title: 'Create, edit, delete maps'
 
 view published map entities:
   title: 'View published maps'

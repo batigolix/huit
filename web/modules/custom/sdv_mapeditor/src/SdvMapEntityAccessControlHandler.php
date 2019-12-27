@@ -36,7 +36,7 @@ class SdvMapEntityAccessControlHandler extends EntityAccessControlHandler {
 
       case 'delete':
 
-        return AccessResult::allowedIfHasPermission($account, 'delete map entities');
+        return AccessResult::allowedIfHasPermission($account, 'edit map entities');
     }
 
     // Unknown operation, no opinion.
@@ -47,7 +47,7 @@ class SdvMapEntityAccessControlHandler extends EntityAccessControlHandler {
    * {@inheritdoc}
    */
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
-    return AccessResult::allowedIfHasPermission($account, 'add map entities');
+    return AccessResult::allowedIfHasPermission($account, 'edit map entities');
   }
 
 }
