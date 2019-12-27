@@ -2,6 +2,8 @@ usabilla:
   version: 1.0
   js:
     usabilla.js: {}
+  dependencies:
+    - core/drupalSettings
 widget:
   version: 1.0
   js:

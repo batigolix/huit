@@ -1,0 +1,5 @@
+entity.usabilla_item.add_form:
+  route_name: entity.usabilla_item.add_form
+  title: 'Add Usabilla item'
+  appears_on:
+    - entity.usabilla_item.collection

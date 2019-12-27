@@ -39,5 +39,30 @@ function sdv_usabilla_theme() {
  */
 function sdv_usabilla_page_attachments(array &$attachments) {
   $manager = \Drupal::service('usabilla.attach');
-  $manager->getAttachment($attachments);
+//  $manager->attachButton($attachments);
+
+  // Attaches Usabilla button if there is an active one.
+  $usabilla_id = $manager->getActiveButton();
+  if ($usabilla_id) {
+    $attachments['#attached']['library'][] = 'sdv_usabilla/usabilla';
+    $attachments['#attached']['drupalSettings']['usabilla']['id'] = $usabilla_id;
+  }
+
+
+
+}
+
+
+function sdv_usabilla_themes() {
+
+
+
+  $theme_handler = \Drupal::service('theme_handler');
+  $themes = $theme_handler->listInfo();
+  foreach($themes as $key => $theme){
+    if ($theme_handler->themeExists($key) && $theme_handler->hasUi($key)) {
+      $enabled_themes[$key] = $theme->getName();
+    }
+  }
+  return $enabled_themes;
 }

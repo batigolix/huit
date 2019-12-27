@@ -4,3 +4,17 @@ sdv_usabilla.usabilla_settings_form:
   description: 'Settings for Usabilla'
   parent: system.admin_config_system
   weight: 99
+
+# Usabilla item menu items definition
+entity.usabilla_item.collection:
+  title: 'Usabilla item list'
+  route_name: entity.usabilla_item.collection
+  description: 'List Usabilla item entities'
+  parent: system.admin_structure
+  weight: 100
+
+usabilla_item.admin.structure.settings:
+  title: 'Usabilla item settings'
+  description: 'Configure Usabilla item entities'
+  route_name: usabilla_item.settings
+  parent: system.admin_structure

@@ -1,0 +1,21 @@
+# Usabilla item routing definition
+usabilla_item.settings_tab:
+  route_name: usabilla_item.settings
+  title: 'Settings'
+  base_route: usabilla_item.settings
+
+entity.usabilla_item.canonical:
+  route_name: entity.usabilla_item.canonical
+  base_route: entity.usabilla_item.canonical
+  title: 'View'
+
+entity.usabilla_item.edit_form:
+  route_name: entity.usabilla_item.edit_form
+  base_route: entity.usabilla_item.canonical
+  title: 'Edit'
+
+entity.usabilla_item.delete_form:
+  route_name:  entity.usabilla_item.delete_form
+  base_route:  entity.usabilla_item.canonical
+  title: Delete
+  weight: 10

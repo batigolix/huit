@@ -1,0 +1,20 @@
+add usabilla item entities:
+  title: 'Create new Usabilla item entities'
+
+administer usabilla item entities:
+  title: 'Administer Usabilla item entities'
+  description: 'Allow to access the administration form to configure Usabilla item entities.'
+  restrict access: true
+
+delete usabilla item entities:
+  title: 'Delete Usabilla item entities'
+
+edit usabilla item entities:
+  title: 'Edit Usabilla item entities'
+
+view published usabilla item entities:
+  title: 'View published Usabilla item entities'
+
+view unpublished usabilla item entities:
+  title: 'View unpublished Usabilla item entities'
+
