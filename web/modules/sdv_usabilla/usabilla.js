@@ -1,7 +1,6 @@
 /**
  * Provides the Usabilla button activation script.
  */
-
 (function ($, Drupal) {
   Drupal.behaviors.usabilla = {
     attach: function attach(context) {

@@ -9,13 +9,13 @@ use Drupal\Core\Entity\EntityTypeManager;
 
 /**
  * Class UsabillaManager.
+ *
+ * @todo cleanup language manager code because it is not in use.
  */
 class UsabillaManager {
 
   /**
    * The language manager service.
-   *
-   * @todo cleanup language manager code.
    *
    * @var \Drupal\Core\Language\LanguageManagerInterface
    */
@@ -54,6 +54,12 @@ class UsabillaManager {
    *
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager service.
+   * @param \Drupal\Core\Config\ConfigFactory $configFactory
+   *   The factory for configuration objects.
+   * @param \Drupal\Core\Theme\ThemeManagerInterface $themeManager
+   *   The theme manager service.
+   * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   *   The entity type manager service.
    */
   public function __construct(LanguageManagerInterface $language_manager, ConfigFactory $configFactory, ThemeManagerInterface $themeManager, EntityTypeManager $entityTypeManager) {
     $this->languageManager = $language_manager;

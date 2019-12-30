@@ -30,6 +30,10 @@
     <!-- Exclude bootstrap 3rd party code included in custom theme. -->
     <exclude-pattern>sass/assets</exclude-pattern>
 
+    <!-- Excludes custom JS -->
+  <exclude-pattern>modules/sdv_usabilla/usabilla.js</exclude-pattern>
+  <exclude-pattern>modules/sdv_usabilla/widget.js</exclude-pattern>
+
     <!-- Phing tasks require to use CamelCaps for argument names. -->
     <rule ref="Drupal.NamingConventions.ValidVariableName">
         <exclude-pattern>src/Phing</exclude-pattern>
