@@ -44,6 +44,19 @@ interface UsabillaItemEntityInterface extends ContentEntityInterface, EntityChan
    */
   public function setName($name);
 
+
+
+  /**
+   * Gets the map publication status.
+   *
+   * @param int $timestamp
+   *   The Map creation timestamp.
+   *
+   * @return string
+   *   Publication label.
+   */
+  public function getStatus();
+
   /**
    * Gets the Usabilla item creation timestamp.
    *
@@ -62,5 +75,21 @@ interface UsabillaItemEntityInterface extends ContentEntityInterface, EntityChan
    *   The called Usabilla item entity.
    */
   public function setCreatedTime($timestamp);
+
+  /**
+   * Gets the item's description.
+   *
+   * @return string
+   *   Description of the Map.
+   */
+  public function getDescription();
+
+  /**
+   * Gets the item's last change timestamp.
+   *
+   * @return int
+   *   Updated timestamp of the Map.
+   */
+  public function getChangedTime();
 
 }

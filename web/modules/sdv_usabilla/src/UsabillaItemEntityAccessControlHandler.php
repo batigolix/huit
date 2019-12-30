@@ -25,19 +25,19 @@ class UsabillaItemEntityAccessControlHandler extends EntityAccessControlHandler 
       case 'view':
 
         if (!$entity->isPublished()) {
-          return AccessResult::allowedIfHasPermission($account, 'view unpublished usabilla item entities');
+          return AccessResult::allowedIfHasPermission($account, 'view unpublished usabilla items');
         }
 
 
-        return AccessResult::allowedIfHasPermission($account, 'view published usabilla item entities');
+        return AccessResult::allowedIfHasPermission($account, 'view published usabilla items');
 
       case 'update':
 
-        return AccessResult::allowedIfHasPermission($account, 'edit usabilla item entities');
+        return AccessResult::allowedIfHasPermission($account, 'edit usabilla items');
 
       case 'delete':
 
-        return AccessResult::allowedIfHasPermission($account, 'delete usabilla item entities');
+        return AccessResult::allowedIfHasPermission($account, 'delete usabilla items');
     }
 
     // Unknown operation, no opinion.
@@ -48,7 +48,7 @@ class UsabillaItemEntityAccessControlHandler extends EntityAccessControlHandler 
    * {@inheritdoc}
    */
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
-    return AccessResult::allowedIfHasPermission($account, 'add usabilla item entities');
+    return AccessResult::allowedIfHasPermission($account, 'add usabilla items');
   }
 
 

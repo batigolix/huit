@@ -35,7 +35,7 @@ use Drupal\Core\Extension\ThemeHandler;
  *   },
  *   base_table = "usabilla_item",
  *   translatable = FALSE,
- *   admin_permission = "administer usabilla item entities",
+ *   admin_permission = "administer usabilla items",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "name",
@@ -44,11 +44,11 @@ use Drupal\Core\Extension\ThemeHandler;
  *     "published" = "status",
  *   },
  *   links = {
- *     "canonical" = "/admin/content/usabilla_item/{usabilla_item}",
- *     "add-form" = "/admin/content/usabilla_item/add",
- *     "edit-form" = "/admin/content/usabilla_item/{usabilla_item}/edit",
- *     "delete-form" = "/admin/content/usabilla_item/{usabilla_item}/delete",
- *     "collection" = "/admin/content/usabilla_item",
+ *     "canonical" = "/admin/structure/usabilla_item/{usabilla_item}",
+ *     "add-form" = "/admin/structure/usabilla_item/add",
+ *     "edit-form" = "/admin/structure/usabilla_item/{usabilla_item}/edit",
+ *     "delete-form" = "/admin/structure/usabilla_item/{usabilla_item}/delete",
+ *     "collection" = "/admin/structure/usabilla_item",
  *   },
  *   field_ui_base_route = "usabilla_item.settings"
  * )
@@ -83,8 +83,28 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
   /**
    * {@inheritdoc}
    */
+  public function getDescription() {
+    return $this->get('description')->value;
+  }
+  /**
+   * {@inheritdoc}
+   */
+  public function getStatus() {
+    return $this->get('status')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getCreatedTime() {
     return $this->get('created')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getChangedTime() {
+    return $this->get('changed')->value;
   }
 
   /**
@@ -106,7 +126,7 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
 
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Usabilla item entity.'))
+      ->setDescription(t('The name of the Usabilla item.'))
       ->setSettings([
         'max_length' => 50,
         'text_processing' => 0,
@@ -141,7 +161,7 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
       ])
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
-        'weight' => -2,
+        'weight' => -4,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
@@ -162,7 +182,7 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
       ])
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
-        'weight' => -4,
+        'weight' => -2,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
@@ -217,11 +237,11 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))
-      ->setDescription(t('The time that the entity was created.'));
+      ->setDescription(t('The time that the item was created.'));
 
     $fields['changed'] = BaseFieldDefinition::create('changed')
       ->setLabel(t('Changed'))
-      ->setDescription(t('The time that the entity was last edited.'));
+      ->setDescription(t('The time that the item was last edited.'));
 
     return $fields;
   }

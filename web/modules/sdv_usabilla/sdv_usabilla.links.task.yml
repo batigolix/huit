@@ -1,9 +1,3 @@
-# Usabilla item routing definition
-usabilla_item.settings_tab:
-  route_name: usabilla_item.settings
-  title: 'Settings'
-  base_route: usabilla_item.settings
-
 entity.usabilla_item.canonical:
   route_name: entity.usabilla_item.canonical
   base_route: entity.usabilla_item.canonical
