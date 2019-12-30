@@ -71,6 +71,20 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
   /**
    * {@inheritdoc}
    */
+  public function getType() {
+    return $this->get('type')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWidgetCode() {
+    return $this->get('widget_code')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getUsabillaId() {
     return $this->get('usabilla_id')->value;
   }
@@ -169,7 +183,28 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
-      ->setRequired(TRUE);
+    ->setRequired(FALSE);
+
+    // Provides the widget code field.
+    // The text of the contact message.
+    $fields['widget_code'] = BaseFieldDefinition::create('string_long')
+      ->setLabel(t('Widget code'))
+      ->setDescription(t('The widget code will be placed in the section of HTML where the InPage widget should appear. See the <a href="@url">Usabilla documentation</a>', ['@url'=>'https://support.usabilla.com/hc/en-us/articles/360016383411-Getting-started-with-Usabilla-In-Page']))
+      ->setRequired(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'string_textarea',
+        'weight' => 3,
+        'settings' => [
+          'rows' => 3,
+        ],
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayOptions('view', [
+        'type' => 'string',
+        'weight' => 0,
+        'label' => 'above',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
 
     // Provides the Usabilla ID field. This can be found in the Usabilla
     // embed code.
@@ -211,7 +246,7 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
       ])
       ->setDisplayOptions('form', [
         'type' => 'options_select',
-        'weight' => -4,
+        'weight' => 2,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
@@ -230,16 +265,16 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
       ])
       ->setDisplayOptions('form', [
         'type' => 'options_select',
-        'weight' => -4,
+        'weight' => 20,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
     // Adds the published field.
-    $fields['status']->setDescription(t('A boolean indicating whether the Usabilla item is published.'))
+    $fields['status']->setDescription(t('Whether the Usabilla item is published.'))
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
-        'weight' => -3,
+        'weight' => 33,
       ]);
 
     // Adds the creation date.

@@ -2,6 +2,7 @@
 
 namespace Drupal\sdv_usabilla;
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
@@ -55,8 +56,10 @@ class UsabillaItemEntityListBuilder extends EntityListBuilder {
    */
   public function buildHeader() {
     $header['id'] = $this->t('ID');
-    $header['usabilla_id'] = $this->t('Usabilla ID');
     $header['name'] = $this->t('Name');
+    $header['description'] = $this->t('Description');
+    $header['type'] = $this->t('Type');
+    $header['usabilla_id'] = $this->t('Usabilla ID');
     $header['status'] = $this->t('Status');
     $header['created'] = $this->t('Created');
     $header['changed'] = $this->t('Updated');
@@ -69,13 +72,15 @@ class UsabillaItemEntityListBuilder extends EntityListBuilder {
   public function buildRow(EntityInterface $entity) {
     /* @var \Drupal\sdv_usabilla\Entity\UsabillaItemEntity $entity */
     $row['id'] = $entity->id();
-    $row['usabilla_id'] = $entity->getUsabillaId();
     $row['name'] = Link::createFromRoute(
       $entity->label(),
       'entity.usabilla_item.edit_form',
       ['usabilla_item' => $entity->id()]
     );
-    $row['status'] = $entity->getStatus() == 1 ? $this->t('Published') : $this->t('Unpublished');
+    $row['description'] = Unicode::truncate($entity->getDescription(), 60, TRUE, TRUE);
+    $row['type'] = $entity->getType() === 'widget' ? $this->t('In-page widget') : $this->t('Button');
+    $row['usabilla_id'] = $entity->getUsabillaId();
+    $row['status'] = $entity->getStatus() === 1 ? $this->t('Published') : $this->t('Unpublished');
     $row['changed'] = $this->dateFormatter->format($entity->getChangedTime(), 'short');
     $row['created'] = $this->dateFormatter->format($entity->getCreatedTime(), 'short');
     return $row + parent::buildRow($entity);

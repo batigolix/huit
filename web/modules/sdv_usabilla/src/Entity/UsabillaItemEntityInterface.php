@@ -87,4 +87,20 @@ interface UsabillaItemEntityInterface extends ContentEntityInterface, EntityChan
    */
   public function getChangedTime();
 
+  /**
+   * Gets the item's type.
+   *
+   * @return string
+   *   Item type key.
+   */
+  public function getType();
+
+  /**
+   * Gets the item's widget code.
+   *
+   * @return string
+   *   Usabilla in-page widget code.
+   */
+  public function getWidgetCode();
+
 }

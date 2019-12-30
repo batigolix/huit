@@ -1,0 +1,32 @@
+{#
+/**
+ * @file sdv_usabilla-item.html.twig
+ * Default theme implementation to present usabilla-item data.
+ *
+ * This template is used when viewing usabilla-item pages.
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ * - attributes: HTML attributes for the container element.
+ *   @todo figure out node ID.
+ * - view_mode: view mode of the usabilla-item entity (default or embed)
+ * - parms: parameters for open layers usabilla-item in delimited format
+ * - dwnld: module folder
+ *
+ * @see template_preprocess_sdv_usabilla-item()
+ *
+ * @ingroup themeable
+ */
+#}
+
+{% if view_mode == "default" %}
+  <div{{ attributes.addClass('sdv_usabilla-item') }}>
+    {% if content %}
+      {{- content -}}
+    {% endif %}
+  </div>
+{% endif %}
+
+{% if view_mode == "embed" %}
+  {{ widget_code|raw }}
+{% endif %}

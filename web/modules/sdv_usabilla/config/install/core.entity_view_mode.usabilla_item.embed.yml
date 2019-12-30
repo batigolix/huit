@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - sdv_usabilla
+id: usabilla_item.embed
+label: Embed
+targetEntityType: usabilla_item
+cache: true

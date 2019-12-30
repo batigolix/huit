@@ -63,4 +63,15 @@ class UsabillaItemEntityForm extends ContentEntityForm {
     $form_state->setRedirect('entity.usabilla_item.canonical', ['usabilla_item' => $entity->id()]);
   }
 
-}
+//  /**
+//   * {@inheritdoc}
+//   */
+//  public function validateForm(array &$form, FormStateInterface $form_state) {
+//
+//    // Validates widget code if type is widget.
+//    if ($form_state->getValue('type') === 'widget') {
+//      $form_state->setErrorByName('widget_code', $this->t('If the type is a widget, then a widget code must be provided'));
+//    }
+//  }
+
+  }

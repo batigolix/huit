@@ -5,6 +5,9 @@
  * Contains sdv_usabilla.module.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+
 /**
  * Implements hook_page_attachments().
  */
@@ -37,4 +40,67 @@ function sdv_usabilla_themes() {
     }
   }
   return $enabled_themes;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function sdv_usabilla_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'usabilla_item_add_form' || $form_id == 'usabilla_item_edit_form') {
+
+    // Toggles the widget code field visible if the type is widget.
+    $form['widget_code']['#states'] = [
+      'visible' => [
+        ':input[name="type"]' => ['value' => 'widget'],
+      ],
+    ];
+
+    // Toggles the theme field visible if the type is button.
+    $form['theme']['#states'] = [
+      'visible' => [
+        ':input[name="type"]' => ['value' => 'button'],
+      ],
+    ];
+
+  }
+}
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function sdv_usabilla_entity_type_build(array &$entity_types) {
+  // Adds custom validation for the widget code field.
+  $entity_types['usabilla_item']->addConstraint('widget_code_required');
+}
+
+/**
+ * Implements hook_theme().
+ */
+function sdv_usabilla_theme() {
+  return [
+    'usabilla_item' => [
+      'render element' => 'elements',
+    ],
+  ];
+}
+
+/**
+ * Prepares variables for map template.
+ */
+function template_preprocess_usabilla_item(&$variables) {
+
+  // Provides the widget code for the template.
+  $usabilla_item = $variables['elements']['#usabilla_item'];
+  $variables['widget_code'] = $usabilla_item->getWidgetCode();
+
+  // Provides the view mode for the template.
+  $variables['view_mode'] =  $variables['elements']['#view_mode'];
+
+  // Provides $content variable for template.
+  $variables['content'] = [];
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+
+
 }

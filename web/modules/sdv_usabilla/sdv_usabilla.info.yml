@@ -5,3 +5,7 @@ core: 8.x
 package: 'SDV'
 config_devel:
   - usabilla.settings
+  - core.entity_view_mode.usabilla_item.embed
+  - core.entity_view_display.usabilla_item.usabilla_item.embed
+  - core.entity_view_display.usabilla_item.usabilla_item.default
+  - views.view.usabilla_widgets
