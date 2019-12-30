@@ -99,11 +99,8 @@ interface SdvMapEntityInterface extends ContentEntityInterface, EntityChangedInt
   /**
    * Gets the map publication status.
    *
-   * @param int $timestamp
-   *   The Map creation timestamp.
-   *
-   * @return string
-   *   Publication label.
+   * @return bool
+   *   1 if published, 0 if not published.
    */
   public function getStatus();
 

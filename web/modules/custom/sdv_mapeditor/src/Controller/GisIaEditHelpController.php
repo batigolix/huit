@@ -10,7 +10,7 @@ use Drupal\Core\Controller\ControllerBase;
 class GisIaEditHelpController extends ControllerBase {
 
   /**
-   * /admin/help/sdv_gis.
+   * Provides the help text for the GIS IA edit page.
    *
    * @return string
    *   Returns twig file containing the help texts for the gis ia edit page.

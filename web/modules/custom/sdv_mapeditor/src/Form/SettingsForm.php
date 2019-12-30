@@ -17,7 +17,7 @@ use Drupal\Component\Serialization\Json;
 class SettingsForm extends ConfigFormBase {
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function __construct(ConfigFactoryInterface $config_factory, FileHandlerInterface $fileHandler) {
     parent::__construct($config_factory);
@@ -25,7 +25,7 @@ class SettingsForm extends ConfigFormBase {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     $fileHandler = $container->get('sdv_mapeditor.filehandler');
@@ -58,7 +58,8 @@ class SettingsForm extends ConfigFormBase {
       '#weight' => -10,
     ];
 
-    // WMS URL provides layers from the geo-server via a GetCapabilities request.
+    // WMS URL provides layers from the geo-server via a GetCapabilities
+    // request.
     $form['wms_url'] = [
       '#type' => 'url',
       '#size' => 80,

@@ -17,29 +17,35 @@ use Psr\Log\LoggerInterface;
 class FileHandler implements FileHandlerInterface {
 
   /**
-   * Drupal\Core\File\FileSystemInterface definition.
+   * The file system service.
    *
    * @var \Drupal\Core\File\FileSystemInterface
    */
   protected $fileSystem;
 
   /**
+   * The logger service.
+   *
    * @var \Psr\Log\LoggerInterface
    */
   protected $logger;
 
   /**
+   * The archiver manager service.
+   *
    * @var \Drupal\Core\Archiver\ArchiverManager
    */
   protected $pluginManagerArchiver;
 
   /**
+   * The messenger service.
+   *
    * @var \Drupal\Core\Messenger\MessengerInterface
    */
   protected $messenger;
 
   /**
-   * Drupal\Core\Config\ConfigFactory definition.
+   * The config factory service.
    *
    * @var \Drupal\Core\Config\ConfigFactory
    */

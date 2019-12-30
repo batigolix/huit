@@ -1,6 +1,5 @@
 <?php
 
-// @todo remove this file without breaking Drupal.
 namespace Drupal\sdv_mapeditor;
 
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -9,6 +8,8 @@ use Symfony\Component\Routing\Route;
 
 /**
  * Provides routes for Map entities.
+ *
+ * @todo remove this file without breaking Drupal.
  *
  * @see \Drupal\Core\Entity\Routing\AdminHtmlRouteProvider
  * @see \Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider

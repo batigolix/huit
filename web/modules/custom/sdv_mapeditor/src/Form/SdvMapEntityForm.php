@@ -38,13 +38,6 @@ class SdvMapEntityForm extends ContentEntityForm {
 
     $form = parent::buildForm($form, $form_state);
 
-    // Group submit handlers in an actions element with a key of "actions" so
-    // that it gets styled correctly, and so that other modules may add actions
-    // to the form. This is not required, but is convention.
-    //    $form['actions'] = [
-    //      '#type' => 'actions',
-    //    ];
-    // .
     return $form;
   }
 
@@ -54,9 +47,6 @@ class SdvMapEntityForm extends ContentEntityForm {
   public function save(array $form, FormStateInterface $form_state) {
     $entity = $this->entity;
 
-    $values = $form_state->getValues();
-    // $values = Json::encode($values);
-    //    $entity->set('gis_ia_params', $values);
     $status = parent::save($form, $form_state);
 
     switch ($status) {

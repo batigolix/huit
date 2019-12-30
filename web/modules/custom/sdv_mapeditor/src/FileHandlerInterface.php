@@ -10,7 +10,7 @@ interface FileHandlerInterface {
   /**
    * Creates a folder in which a file can be downloaded.
    *
-   * @param $path
+   * @param string $path
    *   Path to local folder that will be created.
    *
    * @return mixed
@@ -23,8 +23,7 @@ interface FileHandlerInterface {
    *
    * @param string $url
    *   The URL of the file.
-   *
-   * @param $path
+   * @param string $path
    *   The local folder where the file will be stored.
    *
    * @return bool|mixed
@@ -37,8 +36,7 @@ interface FileHandlerInterface {
    *
    * @param string $file
    *   The path of the file.
-   *
-   * @param $path
+   * @param string $path
    *   The local folder where the file will be extracted.
    */
   public function extract($file, $path);
@@ -48,8 +46,7 @@ interface FileHandlerInterface {
    *
    * @param string $dir
    *   The path of the folder.
-   *
-   * @param $mask
+   * @param string $mask
    *   The preg_match() regular expression for files to be included.
    */
   public function list($dir, $mask);
