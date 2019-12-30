@@ -7,10 +7,13 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Extension\ThemeHandler;
 
 /**
  * Defines the Usabilla item entity.
+ *
+ * Usabilla item can be a button or a in-page widget.
+ *
+ * @todo develop the in-page widget.
  *
  * @ingroup sdv_usabilla
  *
@@ -121,9 +124,9 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    // Add the published field.
     $fields += static::publishedBaseFieldDefinitions($entity_type);
 
+    // Provides the name field.
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
       ->setDescription(t('The name of the Usabilla item.'))
@@ -145,7 +148,7 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
-
+    // Provides the description field.
     $fields['description'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Description'))
       ->setDescription(t('Description of the Usabilla item. Will be used in admin overview.'))
@@ -167,6 +170,8 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
+    // Provides the Usabilla ID field. This can be found in the Usabilla
+    // embed code.
     $fields['usabilla_id'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Usabilla ID'))
       ->setDescription(t('The ID of the item as defined by Usabilla. This can be found in the embed code.'))
@@ -188,7 +193,7 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
-    // Provides the Usabilla type field.
+    // Provides the Usabilla type (button or widget) field.
     $fields['type'] = BaseFieldDefinition::create('list_string')
       ->setLabel(t('Type'))
       ->setDescription(t('The Usabilla item type: <a href="@button_url">Feedback button</a> or <a href="@widget_url">In-page widget</a>. <strong>Note: in-page widget is not implemented yet</strong>.', ['@button_url'=>'https://developers.usabilla.com/#feedback-button', '@widget_url'=> 'https://developers.usabilla.com/#in-page']))
@@ -229,16 +234,19 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
+    // Adds the published field.
     $fields['status']->setDescription(t('A boolean indicating whether the Usabilla item is published.'))
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => -3,
       ]);
 
+    // Adds the creation date.
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))
       ->setDescription(t('The time that the item was created.'));
 
+    // Adds the update date.
     $fields['changed'] = BaseFieldDefinition::create('changed')
       ->setLabel(t('Changed'))
       ->setDescription(t('The time that the item was last edited.'));

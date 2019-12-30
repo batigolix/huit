@@ -4,10 +4,11 @@ namespace Drupal\sdv_usabilla\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Extension\ThemeHandler;
 
 /**
  * Class UsabillaSettingsForm.
+ *
+ * @todo develop API access.
  */
 class UsabillaSettingsForm extends ConfigFormBase {
 
@@ -33,6 +34,8 @@ class UsabillaSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('usabilla.settings');
 
+    // Provides the Usabilla API access key field.
+    // Not in use at the moment.
     $form['access_key'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Access key'),
@@ -40,6 +43,9 @@ class UsabillaSettingsForm extends ConfigFormBase {
       '#description' => $this->t('Usabilla API access key. <strong>Not implemented yet</strong>'),
       '#default_value' => $config->get('access_key'),
     ];
+
+    // Provides the Usabilla API secret key field.
+    // Not in use at the moment.
     $form['secret_key'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Secret key'),
@@ -55,7 +61,6 @@ class UsabillaSettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-
     $this->config('usabilla.settings')
       ->set('access_key', $form_state->getValue('access_key'))
       ->set('secret_key', $form_state->getValue('secret_key'))

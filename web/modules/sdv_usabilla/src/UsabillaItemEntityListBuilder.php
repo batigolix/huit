@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Link;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Component\Utility\Unicode;
 
 /**
  * Defines a class to build a listing of Usabilla item entities.
@@ -50,7 +49,6 @@ class UsabillaItemEntityListBuilder extends EntityListBuilder {
       $container->get('date.formatter'),
     );
   }
-
 
   /**
    * {@inheritdoc}

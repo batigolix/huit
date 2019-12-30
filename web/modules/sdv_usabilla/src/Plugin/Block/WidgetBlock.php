@@ -10,6 +10,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a 'WidgetBlock' block.
  *
+ * This is purely experimental to show an in-page widget.
+ *
+ * @todo develop in-page widget as a paragraph not as a block.
+ *
  * @Block(
  *  id = "widget_block",
  *  admin_label = @Translation("Widget block"),

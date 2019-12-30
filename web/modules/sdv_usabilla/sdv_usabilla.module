@@ -8,39 +8,12 @@
 use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
- * Implements hook_help().
- */
-function sdv_usabilla_help($route_name, RouteMatchInterface $route_match) {
-  switch ($route_name) {
-    // Main module help for the sdv_usabilla module.
-    case 'help.page.sdv_usabilla':
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('SDV Usabilla') . '</p>';
-      return $output;
-
-    default:
-  }
-}
-
-/**
- * Implements hook_theme().
- */
-function sdv_usabilla_theme() {
-  return [
-    'sdv_usabilla' => [
-      'render element' => 'children',
-    ],
-  ];
-}
-
-/**
  * Implements hook_page_attachments().
  */
 function sdv_usabilla_page_attachments(array &$attachments) {
-  $manager = \Drupal::service('usabilla.manager');
 
   // Attaches Usabilla button if there is an active one.
+  $manager = \Drupal::service('usabilla.manager');
   $usabilla_id = $manager->getActiveButton();
   if ($usabilla_id) {
     $attachments['#attached']['library'][] = 'sdv_usabilla/usabilla';
@@ -48,11 +21,16 @@ function sdv_usabilla_page_attachments(array &$attachments) {
   }
 }
 
-
+/**
+ * Provides list of enabled themes.
+ *
+ * Finds enabled themes a formats an array that can be used by form API as a
+ * select list.
+ *
+ * @return array
+ *   Array containing theme key and name.
+ */
 function sdv_usabilla_themes() {
-
-
-
   $theme_handler = \Drupal::service('theme_handler');
   $themes = $theme_handler->listInfo();
   foreach($themes as $key => $theme){

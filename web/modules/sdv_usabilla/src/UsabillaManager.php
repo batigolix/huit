@@ -8,12 +8,14 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 
 /**
- * Class UsabillaAttach.
+ * Class UsabillaManager.
  */
 class UsabillaManager {
 
   /**
    * The language manager service.
+   *
+   * @todo cleanup language manager code.
    *
    * @var \Drupal\Core\Language\LanguageManagerInterface
    */
@@ -81,7 +83,7 @@ class UsabillaManager {
       $array_values = array_values($ids);
       $id = array_shift($array_values);
 
-      // Returns the usabilla ID of the item.
+      // Returns the usabilla ID of the active item.
       $item = $this->entityTypeManager->getStorage('usabilla_item')->load($id);
       $this->config = $this->configFactory->get('usabilla.settings');
       return $item->getUsabillaId();
