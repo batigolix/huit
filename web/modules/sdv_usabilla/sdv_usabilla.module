@@ -38,8 +38,7 @@ function sdv_usabilla_theme() {
  * Implements hook_page_attachments().
  */
 function sdv_usabilla_page_attachments(array &$attachments) {
-  $manager = \Drupal::service('usabilla.attach');
-//  $manager->attachButton($attachments);
+  $manager = \Drupal::service('usabilla.manager');
 
   // Attaches Usabilla button if there is an active one.
   $usabilla_id = $manager->getActiveButton();
@@ -47,9 +46,6 @@ function sdv_usabilla_page_attachments(array &$attachments) {
     $attachments['#attached']['library'][] = 'sdv_usabilla/usabilla';
     $attachments['#attached']['drupalSettings']['usabilla']['id'] = $usabilla_id;
   }
-
-
-
 }
 
 

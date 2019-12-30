@@ -10,7 +10,7 @@ use Drupal\Core\Entity\EntityTypeManager;
 /**
  * Class UsabillaAttach.
  */
-class UsabillaAttach {
+class UsabillaManager {
 
   /**
    * The language manager service.
@@ -61,31 +61,6 @@ class UsabillaAttach {
     $this->entityTypeManager = $entityTypeManager;
   }
 
-  //  public static function create(ContainerInterface $container) {
-  //    return new static(
-  //      $container->get('entity.query')
-  //    );
-  //  }
-
-
-//  /**
-//   * Attach Usabilla button.
-//   *
-//   * @param array $attachments
-//   *   The list of attachments. Passed by reference.
-//   */
-//  public function attachButton(array &$attachments) {
-//
-//    // Attaches Usabilla button if there is an active one.
-//    $usabilla_id = $this->getActiveButton();
-//    if ($usabilla_id) {
-//      $attachments['#attached']['library'][] = 'sdv_usabilla/usabilla';
-//      $attachments['#attached']['drupalSettings']['usabilla']['id'] = $usabilla_id;
-//    }
-//  }
-//
-
-
   /**
    * {@inheritdoc}
    */
@@ -111,32 +86,6 @@ class UsabillaAttach {
       $this->config = $this->configFactory->get('usabilla.settings');
       return $item->getUsabillaId();
     }
-  }
-
-  /**
-   * Returns JavaScript script snippet.
-   *
-   * @return string
-   *   The script snippet.
-   */
-  private function scriptSnippet($container_id) {
-    // Build script snippet.
-    return <<<EOS
-
-EOS;
-  }
-
-  /**
-   * Check if a user is anonymous.
-   *
-   * @return bool
-   *   If we want to add the attachment or not.
-   */
-  private function checkAddAttachmentIfLoggedIn() {
-    //    $disableForLoggedIn = $this->config->get('disable_for_loggedin');
-    $isAnonymous = \Drupal::currentUser()->isAnonymous();
-
-    return empty($disableForLoggedIn) || $isAnonymous;
   }
 
 }

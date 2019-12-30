@@ -1,4 +1,4 @@
 services:
-  usabilla.attach:
-    class: Drupal\sdv_usabilla\UsabillaAttach
+  usabilla.manager:
+    class: Drupal\sdv_usabilla\UsabillaManager
     arguments: ['@language_manager', '@config.factory', '@theme.manager', '@entity_type.manager']
