@@ -1,10 +1,9 @@
 <?php
 
-
 namespace Drupal\sdv_usabilla;
 
 /**
- * Interface UsabillaManagerInterface
+ * Interface UsabillaManagerInterface.
  *
  * @package Drupal\sdv_usabilla
  */

@@ -52,7 +52,6 @@ class UsabillaManager {
   /**
    * Constructs a new UsabillaAttach object.
    *
-   *
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager service.
    */

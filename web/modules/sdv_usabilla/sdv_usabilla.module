@@ -5,8 +5,6 @@
  * Contains sdv_usabilla.module.
  */
 
-use Drupal\Core\Routing\RouteMatchInterface;
-
 /**
  * Implements hook_page_attachments().
  */
@@ -33,7 +31,7 @@ function sdv_usabilla_page_attachments(array &$attachments) {
 function sdv_usabilla_themes() {
   $theme_handler = \Drupal::service('theme_handler');
   $themes = $theme_handler->listInfo();
-  foreach($themes as $key => $theme){
+  foreach ($themes as $key => $theme) {
     if ($theme_handler->themeExists($key) && $theme_handler->hasUi($key)) {
       $enabled_themes[$key] = $theme->getName();
     }

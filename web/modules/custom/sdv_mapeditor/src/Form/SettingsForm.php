@@ -123,7 +123,7 @@ class SettingsForm extends ConfigFormBase {
       $form_state->setErrorByName('servers', $this->t('URL map server is not valid'));
     }
 
-   // Validates YAML formatting.
+    // Validates YAML formatting.
     try {
       $libraries = Yaml::decode($form_state->getValue('libraries'));
     }

@@ -89,6 +89,7 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
   public function getDescription() {
     return $this->get('description')->value;
   }
+
   /**
    * {@inheritdoc}
    */
@@ -196,22 +197,22 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
     // Provides the Usabilla type (button or widget) field.
     $fields['type'] = BaseFieldDefinition::create('list_string')
       ->setLabel(t('Type'))
-      ->setDescription(t('The Usabilla item type: <a href="@button_url">Feedback button</a> or <a href="@widget_url">In-page widget</a>. <strong>Note: in-page widget is not implemented yet</strong>.', ['@button_url'=>'https://developers.usabilla.com/#feedback-button', '@widget_url'=> 'https://developers.usabilla.com/#in-page']))
-      ->setSettings(array(
-        'allowed_values' => array(
+      ->setDescription(t('The Usabilla item type: <a href="@button_url">Feedback button</a> or <a href="@widget_url">In-page widget</a>. <strong>Note: in-page widget is not implemented yet</strong>.', ['@button_url' => 'https://developers.usabilla.com/#feedback-button', '@widget_url' => 'https://developers.usabilla.com/#in-page']))
+      ->setSettings([
+        'allowed_values' => [
           'button' => t('Feedback button'),
           'widget' => t('In-page widget'),
-        ),
-      ))
-      ->setDisplayOptions('view', array(
+        ],
+      ])
+      ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'list_default',
         'weight' => -4,
-      ))
-      ->setDisplayOptions('form', array(
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'options_select',
         'weight' => -4,
-      ))
+      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
@@ -219,18 +220,18 @@ class UsabillaItemEntity extends ContentEntityBase implements UsabillaItemEntity
     $fields['theme'] = BaseFieldDefinition::create('list_string')
       ->setLabel(t('Theme'))
       ->setDescription(t('Choose in which theme the Usabilla item should be enabled.'))
-      ->setSettings(array(
+      ->setSettings([
         'allowed_values_function' => 'sdv_usabilla_themes',
-      ))
-      ->setDisplayOptions('view', array(
+      ])
+      ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'list_default',
         'weight' => -4,
-      ))
-      ->setDisplayOptions('form', array(
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'options_select',
         'weight' => -4,
-      ))
+      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 

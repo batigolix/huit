@@ -28,7 +28,6 @@ class UsabillaItemEntityAccessControlHandler extends EntityAccessControlHandler 
           return AccessResult::allowedIfHasPermission($account, 'view unpublished usabilla items');
         }
 
-
         return AccessResult::allowedIfHasPermission($account, 'view published usabilla items');
 
       case 'update':
@@ -50,6 +49,5 @@ class UsabillaItemEntityAccessControlHandler extends EntityAccessControlHandler 
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
     return AccessResult::allowedIfHasPermission($account, 'add usabilla items');
   }
-
 
 }

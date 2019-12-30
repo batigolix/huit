@@ -57,8 +57,7 @@ class WidgetBlock extends BlockBase implements ContainerFactoryPluginInterface {
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return [
-    ] + parent::defaultConfiguration();
+    return [] + parent::defaultConfiguration();
   }
 
   /**
@@ -103,7 +102,6 @@ $snippet
 EOS;
   }
 
-
   /**
    * {@inheritdoc}
    */
@@ -113,10 +111,10 @@ EOS;
     $build['content'] = [
       '#type' => 'inline_template',
       '#template' => '<div ub-in-page="{{ var }}"></div>',
-      '#context' => array(
+      '#context' => [
         'var' => $this->configuration['id'],
-      ),
-      ];
+      ],
+    ];
 
     $build['#attached']['library'][] = 'sdv_usabilla/widget';
 
