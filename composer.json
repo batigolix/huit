@@ -28,21 +28,6 @@
                     "composer/installers": "^1.2.0"
                 }
             }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "harvesthq/chosen",
-                "version": "1.8.2",
-                "type": "drupal-library",
-                "dist": {
-                    "url": "https://github.com/harvesthq/chosen/releases/download/v1.8.2/chosen_v1.8.2.zip",
-                    "type": "zip"
-                },
-                "require": {
-                    "composer/installers": "^1.2.0"
-                }
-            }
         }
     ],
     "require": {
@@ -50,7 +35,7 @@
         "composer/installers": "^1.2",
         "cweagans/composer-patches": "^1.6.5",
         "drupal-composer/drupal-scaffold": "^2.5",
-        "drupal/chosen": "^2.8",
+        "drupal/chosen": "^2.9",
         "drupal/coder": "^8.3",
         "drupal/config_devel": "^1.4",
         "drupal/config_ignore": "^2.1",
@@ -68,7 +53,7 @@
         "drupal/paragraphs": "^1.10",
         "drupal/search_api": "^1.15",
         "drush/drush": "^9.0.0",
-        "harvesthq/chosen": "^1.8",
+        "oomphinc/composer-installers-extender": "^1.1",
         "rivm-syso/sdv-gis": "master",
         "vlucas/phpdotenv": "^2.4",
         "webflo/drupal-finder": "^1.0.0",
@@ -112,11 +97,15 @@
             "drupal/core": "-p2"
         },
         "installer-types": [
-            "drupal-library"
+            "drupal-library",
+            "library"
         ],
         "installer-paths": {
             "web/core": ["type:drupal-core"],
-            "web/libraries/{$name}": ["type:drupal-library"],
+            "web/libraries/{$name}": [
+                "type:drupal-library",
+                "harvesthq/chosen"
+            ],
             "web/modules/contrib/{$name}": ["type:drupal-module"],
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
