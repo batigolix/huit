@@ -1,0 +1,23 @@
+
+tic.jstree_controller_jstree:
+  path: '/tic/jstree'
+  defaults:
+    _controller: '\Drupal\tic\Controller\JstreeController::jstree'
+    _title: 'jstree controller'
+  requirements:
+    _permission: 'access content'
+
+tic.jstree_ajax_controller_roots:
+  path: '/tic/ajax_roots.json'
+  defaults:
+    _controller: '\Drupal\tic\Controller\JstreeAjaxController::roots'
+    _title: 'jstree roots ajax controller'
+  requirements:
+    _permission: 'access content'
+tic.jstree_ajax_controller_children:
+  path: '/tic/ajax_children.json'
+  defaults:
+    _controller: '\Drupal\tic\Controller\JstreeAjaxController::children'
+    _title: 'jstree children ajax controller'
+  requirements:
+    _permission: 'access content'

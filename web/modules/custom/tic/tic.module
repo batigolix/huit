@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Contains tic.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function tic_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the tic module.
+    case 'help.page.tic':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('tic') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function tic_theme() {
+  return [
+    'jstree' => [
+      'variables' => ['doh'=>NULL],
+    ],
+  ];
+}
+

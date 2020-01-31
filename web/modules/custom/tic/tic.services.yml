@@ -1,0 +1,7 @@
+services:
+  logger.channel.tic:
+    parent: logger.channel_base
+    arguments: ['tic']
+  tic.icdapiconnect:
+    class: Drupal\tic\IcdApiConnectService
+    arguments: ['uri', '@config.manager', '@language_manager']

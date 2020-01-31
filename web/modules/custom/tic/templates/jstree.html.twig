@@ -1,0 +1,55 @@
+{#
+/**
+ * @file sdv_usabilla-item.html.twig
+ * Default theme implementation to present usabilla-item data.
+ *
+ * This template is used when viewing usabilla-item pages.
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ * - attributes: HTML attributes for the container element.
+ *   @todo figure out node ID.
+ * - view_mode: view mode of the usabilla-item entity (default or embed)
+ * - parms: parameters for open layers usabilla-item in delimited format
+ * - dwnld: module folder
+ *
+ * @see template_preprocess_sdv_usabilla-item()
+ *
+ * @ingroup themeable
+ */
+#}
+
+{#<div id="jstree_demo_div"></div>#}
+{#<div id="using_json_2"></div>#}
+<div id="ajax">
+{#  <div id="jstree">#}
+{#  <!-- in this example the tree is populated from inline HTML -->#}
+{#  <ul>#}
+{#    <li>Root node 1#}
+{#      <ul>#}
+{#        <li id="child_node_1">Child node 1</li>#}
+{#        <li>Child node 2</li>#}
+{#        <li>Child node 2</li>#}
+{#        <li>Child node 2</li>#}
+{#        <li>Child node 2</li>#}
+{#        <li>Child node 2</li>#}
+{#        <li>Child node 2</li>#}
+{#        <li>Child node 2</li>#}
+{#      </ul>#}
+{#    </li>#}
+{#    <li>Root node 2</li>#}
+{#  </ul>#}
+{#</div>#}
+{#<button>demo button</button>#}
+
+{#{% if view_mode == "default" %}#}
+{#  <div{{ attributes.addClass('sdv_usabilla-item') }}>#}
+{#    {% if content %}#}
+{#      {{- content -}}#}
+{#    {% endif %}#}
+{#  </div>#}
+{#{% endif %}#}
+
+{#{% if view_mode == "embed" %}#}
+{#  {{ widget_code|raw }}#}
+{#{% endif %}#}
