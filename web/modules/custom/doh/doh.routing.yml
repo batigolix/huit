@@ -1,0 +1,8 @@
+
+doh.jstree_controller_jstree:
+  path: '/doh/jstree'
+  defaults:
+    _controller: '\Drupal\doh\Controller\JstreeController::jstree'
+    _title: 'js tree controller'
+  requirements:
+    _permission: 'access content'

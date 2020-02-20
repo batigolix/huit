@@ -1,0 +1,20 @@
+add doh entity entities:
+  title: 'Create new Doh entity entities'
+
+administer doh entity entities:
+  title: 'Administer Doh entity entities'
+  description: 'Allow to access the administration form to configure Doh entity entities.'
+  restrict access: true
+
+delete doh entity entities:
+  title: 'Delete Doh entity entities'
+
+edit doh entity entities:
+  title: 'Edit Doh entity entities'
+
+view published doh entity entities:
+  title: 'View published Doh entity entities'
+
+view unpublished doh entity entities:
+  title: 'View unpublished Doh entity entities'
+

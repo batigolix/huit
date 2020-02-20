@@ -1,0 +1,5 @@
+entity.doh.add_form:
+  route_name: entity.doh.add_form
+  title: 'Add Doh entity'
+  appears_on:
+    - entity.doh.collection

@@ -1,0 +1,21 @@
+# Doh entity routing definition
+doh.settings_tab:
+  route_name: doh.settings
+  title: 'Settings'
+  base_route: doh.settings
+
+entity.doh.canonical:
+  route_name: entity.doh.canonical
+  base_route: entity.doh.canonical
+  title: 'View'
+
+entity.doh.edit_form:
+  route_name: entity.doh.edit_form
+  base_route: entity.doh.canonical
+  title: 'Edit'
+
+entity.doh.delete_form:
+  route_name:  entity.doh.delete_form
+  base_route:  entity.doh.canonical
+  title: Delete
+  weight: 10

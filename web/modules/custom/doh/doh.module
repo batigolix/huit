@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains doh.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function doh_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the doh module.
+    case 'help.page.doh':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('My Awesome Module') . '</p>';
+      return $output;
+
+    default:
+  }
+}

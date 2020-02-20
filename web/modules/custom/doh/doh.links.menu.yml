@@ -1,0 +1,14 @@
+
+# Doh entity menu items definition
+entity.doh.collection:
+  title: 'Doh entity list'
+  route_name: entity.doh.collection
+  description: 'List Doh entity entities'
+  parent: system.admin_structure
+  weight: 100
+
+doh.admin.structure.settings:
+  title: 'Doh entity settings'
+  description: 'Configure Doh entity entities'
+  route_name: doh.settings
+  parent: system.admin_structure

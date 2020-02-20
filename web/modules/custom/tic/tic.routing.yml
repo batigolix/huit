@@ -21,3 +21,11 @@ tic.jstree_ajax_controller_children:
     _title: 'jstree children ajax controller'
   requirements:
     _permission: 'access content'
+
+tic.cbs_opendata_controller_build:
+  path: '/tic/cbs-open-data'
+  defaults:
+    _controller: '\Drupal\tic\Controller\CbsOpendataController::build'
+    _title: 'cbs open data'
+  requirements:
+    _permission: 'access content'
