@@ -1,0 +1,10 @@
+
+sdv_highcharts.sdv_higcharts_admin_themes_form:
+  path: '/admin/config/media/highcharts/customthemes'
+  defaults:
+    _form: '\Drupal\sdv_highcharts\Form\ThemesForm'
+    _title: 'Highcharts custom themes'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE

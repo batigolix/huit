@@ -1,0 +1,5 @@
+sdv_highcharts.sdv_higcharts_admin_themes_form:
+  title: 'Highcharts custom themes'
+  route_name: sdv_highcharts.sdv_higcharts_admin_themes_form
+  description: 'Configure the options that will be available when creating charts.'
+  parent: system.admin_config_media

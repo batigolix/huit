@@ -1,4 +1,4 @@
-uuid: 2ac93745-fed0-40c8-9dcc-6045c88fa412
+uuid: a04f166b-5ad7-41b7-a3df-378fa7983c62
 langcode: en
 status: true
 dependencies:
@@ -6,7 +6,7 @@ dependencies:
     - block_content
     - user
 _core:
-  default_config_hash: BmeDSOTSaTVy5QLgxgJ5ye_ZseG5t88JXRP1apFoBkk
+  default_config_hash: 2J0rd5cWfFsdSX-kAb0f9EzvC0_vn4NxGlUpOQAXeOU
 id: block_content
 label: 'Custom block library'
 module: views
@@ -514,7 +514,7 @@ display:
         - url
         - url.query_args
         - user.permissions
-      max-age: 0
+      max-age: -1
       tags: {  }
   page_1:
     display_plugin: page
@@ -539,5 +539,5 @@ display:
         - url
         - url.query_args
         - user.permissions
-      max-age: 0
+      max-age: -1
       tags: {  }

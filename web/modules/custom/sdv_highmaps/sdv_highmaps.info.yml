@@ -1,0 +1,7 @@
+name: 'SDV Highmaps'
+type: module
+description: 'SDV Highmaps'
+core: 8.x
+package: 'Custom'
+dependencies:
+  - field

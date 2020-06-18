@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Contains sdv_highmaps.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function sdv_highmaps_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the sdv_highmaps module.
+    case 'help.page.sdv_highmaps':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('SDV Highmaps') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function sdv_highmaps_theme() {
+  return [
+    'sdv_highmaps' => [
+      'render element' => 'children',
+    ],
+  ];
+}

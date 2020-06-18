@@ -1,0 +1,31 @@
+uuid: 5f2937f7-a02f-4962-87ed-eae0d118bedf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tessie
+    - node.type.page
+    - paragraphs.paragraphs_type.map
+  module:
+    - entity_reference_revisions
+id: node.page.field_tessie
+field_name: field_tessie
+entity_type: node
+bundle: page
+label: tessie
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      map: map
+    target_bundles_drag_drop:
+      map:
+        enabled: true
+        weight: 2
+field_type: entity_reference_revisions

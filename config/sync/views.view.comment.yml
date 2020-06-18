@@ -1,4 +1,4 @@
-uuid: b92623e0-f281-4d27-8c7b-f0f0ab1aeccb
+uuid: 5403e656-6f04-41d9-b5a4-9511aee76195
 langcode: en
 status: true
 dependencies:
@@ -6,7 +6,7 @@ dependencies:
     - comment
     - user
 _core:
-  default_config_hash: cCq1vjj1qmyd39oBIUyOe8YPDsobJ5fZRhp2Xy5O7lA
+  default_config_hash: fsBo_zgUeLyYZdghaw4PkOHA-HqFxu7wmQLilF35XYg
 id: comment
 label: Comments
 module: comment

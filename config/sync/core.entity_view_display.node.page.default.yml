@@ -1,14 +1,12 @@
-uuid: 683149e0-0993-4401-8469-5fd1bfca8adb
+uuid: 9ece57ab-fd95-4599-aff0-ef0e8e9e8d19
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.page.body
-    - field.field.node.page.field_map
-    - field.field.node.page.field_usabilla_widget
+    - field.field.node.page.field_tessie
     - node.type.page
   module:
-    - text
+    - entity_reference_revisions
     - user
 _core:
   default_config_hash: g1S3_GLaxq4l3I9RIca5Mlz02MxI2KmOquZpHw59akM
@@ -17,35 +15,16 @@ targetEntityType: node
 bundle: page
 mode: default
 content:
-  body:
-    label: hidden
-    type: text_default
-    weight: 100
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_map:
+  field_tessie:
+    type: entity_reference_revisions_entity_view
     weight: 102
     label: above
     settings:
-      view_mode: embed
-      link: false
+      view_mode: default
+      link: ''
     third_party_settings: {  }
-    type: entity_reference_entity_view
-    region: content
-  field_usabilla_widget:
-    weight: 103
-    label: above
-    settings:
-      view_mode: embed
-      link: false
-    third_party_settings: {  }
-    type: entity_reference_entity_view
     region: content
   links:
     weight: 101
     region: content
-    settings: {  }
-    third_party_settings: {  }
-hidden:
-  search_api_excerpt: true
+hidden: {  }

@@ -34,3 +34,18 @@ function tic_theme() {
   ];
 }
 
+/**
+ * Helper, totaly destroys fields by name.
+ *
+ * @param string $field_name
+ *   Machine name of field to destroy.
+ */
+function tic_annihilate_field($field_name) {
+  $fields = \Drupal::entityManager()->getStorage('field_config')->loadByProperties(['field_name' => $field_name]);
+  foreach ($fields as $field) {
+    if ($field) {
+      $field->delete();
+      field_purge_field($field);
+    }
+  }
+}

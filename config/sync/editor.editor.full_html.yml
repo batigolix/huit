@@ -1,4 +1,4 @@
-uuid: 1a31b9ca-4223-4053-9709-85fafd30d373
+uuid: 1d9d0860-cfb2-4479-bcb8-fec2ede27ac4
 langcode: en
 status: true
 dependencies:
@@ -39,10 +39,8 @@ settings:
           items:
             - Blockquote
             - DrupalImage
-            - node
             - Table
             - HorizontalRule
-            - test
         -
           name: 'Block Formatting'
           items:
@@ -55,13 +53,11 @@ settings:
   plugins:
     stylescombo:
       styles: ''
-    language:
-      language_list: un
 image_upload:
   status: true
   scheme: public
   directory: inline-images
   max_size: ''
   max_dimensions:
-    width: null
-    height: null
+    width: 0
+    height: 0

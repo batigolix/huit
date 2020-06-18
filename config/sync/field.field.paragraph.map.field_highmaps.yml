@@ -1,0 +1,21 @@
+uuid: 439c5b59-af33-4dd2-b1d6-d1030c04bb7b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_highmaps
+    - paragraphs.paragraphs_type.map
+  module:
+    - sdv_highmaps
+id: paragraph.map.field_highmaps
+field_name: field_highmaps
+entity_type: paragraph
+bundle: map
+label: Highmaps
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: highmaps

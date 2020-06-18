@@ -1,0 +1,64 @@
+layout_1:
+  version: VERSION
+  js:
+    js/layout_1.js: {}
+vtvlayout:
+  version: VERSION
+  js:
+    js/vtvlayout.js: {}
+export_csv:
+  version: VERSION
+  js:
+    js/export-csv.js: {}
+motion:
+  version: VERSION
+  js:
+    js/motion.js: {}
+grouped_categories:
+  version: VERSION
+  js:
+    js/grouped-categories.js: {}
+highcharts:
+  version: 6.1.1
+  js:
+    /libraries/highcharts/code/highcharts.js: { weight: -15 }
+highcharts_more:
+  version: 6.1.1
+  js:
+    /libraries/highcharts/code/highcharts-more.js: {}
+highcharts-mod-data:
+  version: 6.1.1
+  js:
+    /libraries/highcharts/code/modules/data.js: {}
+highcharts-mod-funnel:
+  version: 6.1.1
+  js:
+    /libraries/highcharts/code/modules/funnel.js: {}
+highcharts-mod-heatmap:
+  version: 6.1.1
+  js:
+    /libraries/highcharts/code/modules/heatmap.js: {}
+highcharts-mod-no-data-to-display:
+  version: 6.1.1
+  js:
+    /libraries/highcharts/code/modules/no-data-to-display.js: {}
+highcharts-mod-solid-gauge:
+  version: 6.1.1
+  js:
+    /libraries/highcharts/code/modules/solid-gauge.js: {}
+highcharts-mod-treemap:
+  version: 6.1.1
+  js:
+    /libraries/highcharts/code/modules/treemap.js: {}
+highcharts-mod-exporting:
+  version: 6.1.1
+  js:
+    /libraries/highcharts/code/modules/exporting.js: {}
+highcharts-mod-accessibility:
+  version: 6.1.1
+  js:
+    /libraries/highcharts/code/modules/accessibility.js: {}
+highcharts-mod-annotations:
+  version: 6.1.1
+  js:
+    /libraries/highcharts/code/modules/annotations.js: {}

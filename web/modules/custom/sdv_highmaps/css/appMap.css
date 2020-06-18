@@ -1,0 +1,21 @@
+
+body .code-wrapper.text-center {
+  text-align: left !important; 
+  display: none;
+}
+
+.mapContainer {
+  max-width: 550px;
+}
+
+.highcharts-data-table caption {
+  caption-side: top;
+}
+
+.highcharts-data-table td.number {
+  text-align: right;
+}
+
+.highcharts-data-table thead th {
+  word-break: break-word;
+}

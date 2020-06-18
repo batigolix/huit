@@ -1,0 +1,25 @@
+uuid: fff9f180-3ffa-402d-9066-4e6f1f630329
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.map.field_highmaps
+    - paragraphs.paragraphs_type.map
+  module:
+    - sdv_highmaps
+id: paragraph.map.default
+targetEntityType: paragraph
+bundle: map
+mode: default
+content:
+  field_highmaps:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: highmaps_widget
+    region: content
+hidden:
+  created: true
+  status: true
