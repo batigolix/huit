@@ -3,17 +3,7 @@ sdv_highmaps:
   js:
     https://code.highcharts.com/maps/highmaps.js: { type: external }
     https://code.highcharts.com/maps/modules/exporting.js: { type: external }
-    https://code.highcharts.com/mapdata/countries/nl/nl-all-all.js: { type: external }
-#    js/highmaps.src.js: {}
-#    js/venz_map.js: {}
-#    js/HighchartsExtendFunctions.js: {}
-#    js/venz_mapTheme.js: {}
-    js/movb-regios-2012_1350.js: {}
-    js/nederland.geojson.js: {}
-    js/provincies.geojson.js: {}
     js/demo.js: {}
-#    js/coronaScripts.1.1.min.js: {}
-    js/gemeente_ggd_2019.geojson.min.js: {}
   css:
     component:
 #      css/appMap.css: {}
@@ -22,7 +12,15 @@ sdv_highmaps:
     - core/drupal
     - core/drupalSettings
     - core/jquery
-#    - sdv_highcharts/highcharts
-#    - sdv_highcharts/highcharts-mod-exporting
-#    - sdv_highcharts/export_csv
-#    - sdv_highcharts/accessibility
+nl-provinces:
+  js:
+    js/nl-provinces.geojson.js: {}
+nl-ggd-regions:
+  js:
+    js/nl-ggd-regions.geojson.js: {}
+nl-municipalities:
+  js:
+    js/nl-municipalities.geojson.js: {}
+europe:
+  js:
+    js/europe.geojson.js: {}

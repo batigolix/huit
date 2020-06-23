@@ -16,11 +16,9 @@ COMPOSER="fin composer"
 
 #-------------------------- END: Settings --------------------------------
 
-#echo "Pulling latest code"
-#git pull
+fin up
 
-echo "Installing packages"
-$COMPOSER install
+cd ${DOCROOT_PATH}
 
 echo "Clearing drush cache"
 $DRUSH cc drush
@@ -32,16 +30,7 @@ $DRUSH config-set system.file path.temporary 'sites/default/files/temp' -y
 
 echo "Updating Drupal"
 $DRUSH cr
-$DRUSH cim -y
 $DRUSH updb -y
+$DRUSH cim -y
 $DRUSH cr
-$DRUSH entup
-
-# reset the solr container
-#fin reset solr
-
-# index the content
-#$DRUSH sapi-r content_index
-#$DRUSH sapi-i content_index
-
 $DRUSH cron

@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+#-------------------------- Settings --------------------------------
+
+# PROJECT_ROOT and DOCROOT are set as env variables in cli
+SITE_DIRECTORY="default"
+DOCROOT_PATH="${PROJECT_ROOT}/${DOCROOT}"
+SITEDIR_PATH="${DOCROOT_PATH}/sites/${SITE_DIRECTORY}"
+DRUSH="fin drush"
+COMPOSER="fin composer"
+MODULE=$1
+I=0
+
+#-------------------------- END: Settings --------------------------------
+
+if [ "$MODULE" = '' ] ; then
+  echo "Module missing"
+	exit 1
+fi
+
+cd $PROJECT_ROOT;
+$COMPOSER require drupal/$MODULE
+$DRUSH en $MODULE -y
+
+
+
+
+
+
+
+
+

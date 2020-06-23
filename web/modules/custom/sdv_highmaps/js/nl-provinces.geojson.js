@@ -1,4 +1,4 @@
-Highcharts.maps["countries/nl/nl-provinces"] = {
+Highcharts.maps["nl-provinces"] = {
 "type": "FeatureCollection",
 
 "features": [

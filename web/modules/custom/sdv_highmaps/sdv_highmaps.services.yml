@@ -1,0 +1,7 @@
+services:
+  logger.channel.sdv_highmaps:
+    parent: logger.channel_base
+    arguments: ['sdv_highmaps']
+  sdv_highmaps.manager:
+    class: Drupal\sdv_highmaps\mapManager
+    arguments: ['@config.manager', '@config.factory']
