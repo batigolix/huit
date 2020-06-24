@@ -6,7 +6,7 @@
     attach: function attach(context) {
 
       var config = JSON.parse(drupalSettings.highmaps.config);
-      console.log(config);
+      console.log(drupalSettings.highmaps);
 
       var dataset = drupalSettings.highmaps.dataset;
       // console.log('dataset');
@@ -25,8 +25,9 @@ console.log(map);
       // Create the chart
       Highcharts.mapChart('container', {
         chart: {
-          map: config.chart.map
+          map: config.map
         },
+        credits: config.credits,
         title: {
           text: config.title
         },

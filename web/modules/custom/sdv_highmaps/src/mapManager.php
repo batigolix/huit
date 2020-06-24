@@ -4,7 +4,6 @@ namespace Drupal\sdv_highmaps;
 
 use Drupal\Core\Config\ConfigManagerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Field\FieldItemInterface;
 
 /**
  * Class mapManager.
@@ -80,17 +79,19 @@ class mapManager implements mapManagerInterface {
    * Prepares the dataset for highchart map.
    *
    *
-   * @param $data
+   * @param $series
    *
    * @return array dataset
    */
-  public function getMapData($data) {
-    $lines = explode(PHP_EOL, $data->data);
+  public function getMapData($series) {
+    $lines = explode(PHP_EOL, $series['data']);
 
-    $key_column = $data->key_column - 1;
-    $value_column = $data->value_column -1;
+    // Sets key and value columns and substracts 1 to match php array.
+    $key_column = $series['key_column'] - 1;
+    $value_column = $series['value_column'] - 1;
 
-    $delimiter=$data->delimiter='\t' ? "\t": $data->delimiter;
+    // Sets the tab delimiter.
+    $delimiter=$series['delimiter']='\t' ? "\t": $series['delimiter'];
 
     $dataset = [];
     foreach ($lines as $line) {

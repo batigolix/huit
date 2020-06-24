@@ -39,10 +39,10 @@ interface mapManagerInterface {
   /**
    * Prepares the dataset for highchart map.
    *
-   * @param $data
+   * @param $series
    *
    * @return array dataset
    */
-  function getMapData($data);
+  function getMapData($series);
 
 }

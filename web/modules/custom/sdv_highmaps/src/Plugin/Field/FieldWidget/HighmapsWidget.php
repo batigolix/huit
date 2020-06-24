@@ -2,7 +2,6 @@
 
 namespace Drupal\sdv_highmaps\Plugin\Field\FieldWidget;
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
@@ -10,6 +9,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\sdv_highmaps\mapManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 
 /**
@@ -26,14 +26,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class HighmapsWidget extends WidgetBase implements ContainerFactoryPluginInterface {
 
-
+  /**
+   * The serializer.
+   *
+   * @var \Symfony\Component\Serializer\SerializerInterface
+   */
+  protected $serializer;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, mapManagerInterface $mapManager) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, mapManagerInterface $mapManager, SerializerInterface $serializer) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
     $this->mapManager = $mapManager;
+    $this->serializer = $serializer;
   }
 
   /**
@@ -46,7 +52,8 @@ class HighmapsWidget extends WidgetBase implements ContainerFactoryPluginInterfa
       $configuration['field_definition'],
       $configuration['settings'],
       $configuration['third_party_settings'],
-      $container->get('sdv_highmaps.manager')
+      $container->get('sdv_highmaps.manager'),
+      $container->get('serializer')
     );
   }
 
@@ -102,9 +109,10 @@ class HighmapsWidget extends WidgetBase implements ContainerFactoryPluginInterfa
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
 
-//    $maps = $this->mapManager->getMaps();
+    //    $maps = $this->mapManager->getMaps();
     $element['#title'] = t('Name');
     $element['#description'] = t('Name of the map. This will be used in the admin interface.');
+    $element['#size'] = 48;
     $element['value'] = $element + [
         '#type' => 'textfield',
         '#default_value' => isset($items[$delta]->value) ? $items[$delta]->value : NULL,
@@ -113,28 +121,18 @@ class HighmapsWidget extends WidgetBase implements ContainerFactoryPluginInterfa
         '#maxlength' => $this->getFieldSetting('max_length'),
       ];
     echo 4;
-    $map_config = isset($items[$delta]->mapconfig_json) ? Json::decode($items[$delta]->mapconfig_json) : [];
+    $map_config = isset($items[$delta]->mapconfig_json) ? $this->serializer->decode($items[$delta]->mapconfig_json, 'json') : [];
     $element['mapconfig'] = [
       '#type' => 'container',
       '#title' => t('Map configuration'),
       '#element_validate' => [
         [static::class, 'validate'],
       ],
-      'chart'=> [
-        '#type'=>'container',
-        'map'=>[
-        '#type'=>'select',
-        '#title' => t('Type'),
-        '#options'=>$this->mapManager->getMapOptions(),
-        '#default_value' => $map_config['chart']['map'] ?? 'nl-provinces',
-        '#description' => t('The type of map to present data. This must be mapped with the data setusing a key.'),
-        ]
-      ],
       'title' => [
         '#type' => 'textfield',
         '#title' => t('Map title'),
         '#default_value' => $map_config['title'] ?? '',
-        '#size' => 64,
+        '#size' => 48,
         '#description' => t('Map title will be printed in the top of the map'),
         '#maxlength' => 128,
       ],
@@ -142,12 +140,20 @@ class HighmapsWidget extends WidgetBase implements ContainerFactoryPluginInterfa
         '#type' => 'textfield',
         '#title' => t('Map subtitle'),
         '#default_value' => $map_config['subtitle'] ?? '',
-        '#size' => 128,
+        '#size' => 48,
         '#description' => t('Map subtitle will be printed in the top of the map under the title'),
         '#maxlength' => 256,
       ],
+      'map' => [
+        '#type' => 'select',
+        '#title' => t('Type'),
+        '#options' => $this->mapManager->getMapOptions(),
+        '#default_value' => $map_config['map'] ?? 'nl-provinces',
+        '#description' => t('The type of map to present data. This must be mapped with the data setusing a key.'),
+      ],
       'mapNavigation' => [
-        '#type' => 'fieldset',
+        '#type' => 'details',
+        '#open' => false,
         '#title' => t('Map navigation'),
         'enabled' => [
           '#type' => 'checkbox',
@@ -157,7 +163,8 @@ class HighmapsWidget extends WidgetBase implements ContainerFactoryPluginInterfa
         ],
       ],
       'colorAxis' => [
-        '#type' => 'fieldset',
+        '#type' => 'details',
+        '#open' => false,
         '#title' => t('Color axis'),
         'minColor' => [
           '#type' => 'color',
@@ -176,23 +183,24 @@ class HighmapsWidget extends WidgetBase implements ContainerFactoryPluginInterfa
           '#title' => t('Minimum'),
           '#description' => t("The minimum value of the axis"),
           '#size' => 3,
-          '#default_value' => $map_config['colorAxis']['min'] ?? null,
+          '#default_value' => $map_config['colorAxis']['min'] ?? NULL,
         ],
         'max' => [
           '#type' => 'number',
           '#title' => t('Maximum'),
           '#description' => t("The maximum value of the axis"),
           '#size' => 3,
-          '#default_value' => $map_config['colorAxis']['max'] ?? null,
+          '#default_value' => $map_config['colorAxis']['max'] ?? NULL,
         ],
       ],
       'series' => [
-        '#type' => 'fieldset',
+        '#type' => 'details',
+        '#open' => true,
         '#title' => t('Series'),
         'data' => [
           '#type' => 'textarea',
           '#rows' => 8,
-          '#cols' => 10,
+          '#cols' => 5,
           '#title' => t('Dataset'),
           '#description' => t("Dataset in CSV format. Use comma's to separate columns or change the delimiter below. Use column 1 for the key and column 2 for the value. If necessary the order can be changed using the key and value column fields below."),
           '#default_value' => $map_config['series']['data'] ?? [],
@@ -225,7 +233,7 @@ class HighmapsWidget extends WidgetBase implements ContainerFactoryPluginInterfa
           '#type' => 'textfield',
           '#title' => t('Label'),
           '#default_value' => $map_config['series']['name'] ?? '',
-          '#size' => 128,
+          '#size' => 48,
           '#description' => t('Label for the value shown in the popup.'),
           '#maxlength' => 256,
         ],
@@ -233,6 +241,56 @@ class HighmapsWidget extends WidgetBase implements ContainerFactoryPluginInterfa
           '#type' => 'color',
           '#title' => t('Hover color'),
           '#default_value' => $map_config['series']['color'] ?? '#BADA55',
+        ],
+      ],
+      'credits' => [
+        '#type' => 'details',
+        '#title' => t('Credits'),
+        '#open' => false,
+        //        '#description' => t('Highchart by default puts a credits label in the lower right corner of the chart. This can be changed using these options.'),
+        'enabled' => [
+          '#type' => 'checkbox',
+          '#title' => t('Enable'),
+          '#description' => t('Whether to show credits.'),
+          '#default_value' => $map_config['credits']['enabled'] ?? TRUE,
+        ],
+        'text' => [
+          '#type' => 'textfield',
+          '#title' => t('Text'),
+          '#default_value' => $map_config['series']['text'] ?? 'Copyright (c) 2020 Highsoft AS',
+          '#size' => 48,
+          '#description' => t('Credits text.'),
+          '#maxlength' => 256,
+        ],
+        'href' => [
+          '#type' => 'url',
+          '#title' => t('The URL for the credits label'),
+          '#size' => 48,
+          '#default_value' => $map_config['credits']['href'] ?? 'http://highcharts.com',
+        ],
+        'position' => [
+          '#type' => 'container',
+          'align' => [
+            '#type' => 'select',
+            '#options' => [
+              'left' => t('Left'),
+              'right' => t('Right'),
+            ],
+            '#title' => t('Align'),
+          ],
+          'x' => [
+            '#type' => 'number',
+            '#title' => t('X offset'),
+            '#size' => 3,
+            '#default_value' => $map_config['credits']['position']['x'] ?? NULL,
+          ],
+          'y' => [
+            '#type' => 'number',
+            '#title' => t('Y offset'),
+            '#size' => 3,
+            '#default_value' => $map_config['credits']['position']['y'] ?? NULL,
+          ],
+
         ],
       ],
     ];
@@ -255,18 +313,23 @@ class HighmapsWidget extends WidgetBase implements ContainerFactoryPluginInterfa
 
       // Removes empty coloraxis min and max from configuration to let
       // highcharts automatically calculate axis.
-      if(!$value['mapconfig']['colorAxis']['min']){
+      if (!$value['mapconfig']['colorAxis']['min']) {
         unset($value['mapconfig']['colorAxis']['min']);
       }
-      if(!$value['mapconfig']['colorAxis']['max']){
+      if (!$value['mapconfig']['colorAxis']['max']) {
         unset($value['mapconfig']['colorAxis']['max']);
       }
 
-      $map_config = Json::encode($value['mapconfig']);
+      // Removes empty credit offset min and max from configuration.
+      if (!$value['mapconfig']['credits']['position']['x']) {
+        unset($value['mapconfig']['credits']['position']['x']);
+      }
+      if (!$value['mapconfig']['credits']['position']['y']) {
+        unset($value['mapconfig']['credits']['position']['y']);
+      }
 
-
-
-
+      // Converts values to json before storing.
+      $map_config = $this->serializer->encode($value['mapconfig'], 'json');
       $values[$key]['mapconfig_json'] = $map_config;
     }
     return $values;

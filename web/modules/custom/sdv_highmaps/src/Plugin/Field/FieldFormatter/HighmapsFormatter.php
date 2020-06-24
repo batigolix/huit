@@ -3,8 +3,6 @@
 namespace Drupal\sdv_highmaps\Plugin\Field\FieldFormatter;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -13,6 +11,9 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\sdv_highmaps\mapManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Component\Serialization\Json;
+use Symfony\Component\Serializer\SerializerInterface;
+
 
 /**
  * Plugin implementation of the 'highmaps_formatter' formatter.
@@ -35,6 +36,13 @@ class HighmapsFormatter extends FormatterBase implements ContainerFactoryPluginI
   protected $mapManager;
 
   /**
+   * The serializer.
+   *
+   * @var \Symfony\Component\Serializer\SerializerInterface
+   */
+  protected $serializer;
+
+  /**
    * Constructs a new HighmapsFormatter.
    *
    * @param string $plugin_id
@@ -54,10 +62,10 @@ class HighmapsFormatter extends FormatterBase implements ContainerFactoryPluginI
    * @param \Drupal\sdv_highmaps\mapManagerInterface $mapManager
    *   The date formatter service.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, mapManagerInterface $mapManager) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, mapManagerInterface $mapManager, SerializerInterface $serializer) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
-
     $this->mapManager = $mapManager;
+    $this->serializer = $serializer;
   }
 
   /**
@@ -73,6 +81,7 @@ class HighmapsFormatter extends FormatterBase implements ContainerFactoryPluginI
       $configuration['view_mode'],
       $configuration['third_party_settings'],
       $container->get('sdv_highmaps.manager'),
+      $container->get('serializer')
     );
   }
 
@@ -121,17 +130,17 @@ class HighmapsFormatter extends FormatterBase implements ContainerFactoryPluginI
       $elements[$delta]['#attached']['drupalSettings']['highmaps']['config'] = $this->mapManager->getMapConfig($item);
 
       // Gets the dataset.
-      $mapconfig = json_decode($item->mapconfig_json);
-      $elements[$delta]['#attached']['drupalSettings']['highmaps']['dataset'] = $this->mapManager->getMapData($mapconfig->series);
+      $mapconfig = $this->serializer->decode($item->mapconfig_json, 'json');
+      $elements[$delta]['#attached']['drupalSettings']['highmaps']['dataset'] = $this->mapManager->getMapData($mapconfig['series']);
 
       // Gets the map type.
       $maps = $this->mapManager->getMapTypes();
+      $map = $maps[$mapconfig['map']];
       // Converts map dataset into an array before attaching.
-      $elements[$delta]['#attached']['drupalSettings']['highmaps']['map'] = $maps[$mapconfig->chart->map];
+      $elements[$delta]['#attached']['drupalSettings']['highmaps']['map'] = $map;
 
       // Adds geojson library.
-      $map = $mapconfig->chart->map;
-      $elements[$delta]['#attached']['library'][] = "sdv_highmaps/$map";
+      $elements[$delta]['#attached']['library'][] = $map['library'];
     }
     return $elements;
   }
